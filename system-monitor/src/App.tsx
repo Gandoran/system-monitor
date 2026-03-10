@@ -1,50 +1,48 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { useState, useEffect } from "react";
+import { listen } from "@tauri-apps/api/event";
+
+// 1. Creiamo l'Interfaccia TypeScript (la "copia" della tua SystemStats di Rust)
+interface SystemStats {
+  cpu_stats: { cpu_usage: number };
+  cpu_temp: { cpu_temp: number };
+  ram_stats: { ram_used: number; ram_total: number };
+  gpu_stats: { 
+    gpu_usage: number; 
+    gpu_temp: number; 
+    vram_used: number; 
+    vram_total: number;
+  };
+}
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  // 2. Diciamo a React: "Questa variabile inizierà come 'null', 
+  // ma poi diventerà un oggetto di tipo 'SystemStats'!"
+  const [stats, setStats] = useState<SystemStats | null>(null);
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  useEffect(() => {
+    const unlistenPromise = listen("system-stats", (event) => {
+      // 3. Forziamo il tipo dicendo a TypeScript: 
+      // "Tranquillo, so per certo che questo payload sconosciuto è un SystemStats"
+      setStats(event.payload as SystemStats); 
+    });
+
+    return () => {
+      unlistenPromise.then((unlisten) => unlisten());
+    };
+  }, []);
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div style={{ padding: "20px", fontFamily: "monospace" }}>
+      <h2>Monitoraggio Sistema in Tempo Reale 🚀</h2>
+      
+      <div style={{ background: "#1e1e1e", color: "#00ff00", padding: "15px", borderRadius: "8px" }}>
+        {stats ? (
+          <pre>{JSON.stringify(stats, null, 2)}</pre>
+        ) : (
+          <p>In attesa dei dati da Rust...</p>
+        )}
       </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
+    </div>
   );
 }
 

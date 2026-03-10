@@ -3,6 +3,7 @@ use super::cpu_sensor::{CpuSensor, CpuStats};
 use super::ram_sensor::{RamSensor, RamStats};
 use super::cpu_temp_sensor::{TempSensor, TempStats};
 
+#[derive(serde::Serialize, Clone)]
 pub struct SystemStats {
     pub gpu_stats: GpuStats,
     pub cpu_stats: CpuStats,

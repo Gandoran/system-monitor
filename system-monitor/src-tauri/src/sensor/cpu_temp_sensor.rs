@@ -19,6 +19,7 @@ extern "system" {
 }
 // ------------------------------------------
 
+#[derive(serde::Serialize, Clone)]
 pub struct TempStats {
     pub cpu_temp: f32,
 }

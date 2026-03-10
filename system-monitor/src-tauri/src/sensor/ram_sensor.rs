@@ -1,5 +1,6 @@
 use sysinfo::System;
 
+#[derive(serde::Serialize, Clone)]
 pub struct RamStats{
     pub ram_used : u64,
     pub ram_total : u64,

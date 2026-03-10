@@ -1,5 +1,6 @@
 use super::gpu_strategy::nvidia_strategy::NvidiaStrategy;
 
+#[derive(serde::Serialize, Clone)]
 pub struct GpuStats {
     pub gpu_usage: f32,
     pub gpu_temp: f32,

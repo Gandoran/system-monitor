@@ -1,5 +1,6 @@
 use sysinfo::System;
 
+#[derive(serde::Serialize, Clone)]
 pub struct CpuStats{
     pub cpu_usage : f32,
 }
