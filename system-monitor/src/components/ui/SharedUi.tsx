@@ -10,6 +10,8 @@ export const C = {
   disk:    "#fb923c",   // orange
   net:     "#a78bfa",   // violet
   temp:    "#fbbf24",   // amber
+  hot:     "#ef4444",   // red-500 (Rosso acceso per gli 80°C+)
+  critical:"#dc2626",   // red-600 (Rosso puro e intenso per i 90°C+)
   text:    "#e2e8f0",
   muted:   "#64748b",
 };
@@ -79,14 +81,34 @@ export function HBar({ pct, color, label, value }:any) {
 }
 
 // ── temp pill ─────────────────────────────────────────────────────────────────
-export function TempBadge({ val }:any) {
-  const hot = val > 80, warm = val > 65;
-  const col = hot ? "#ef4444" : warm ? C.temp : C.cpu;
+export function TempBadge({ val, baseColor = C.cpu, label = "🌡" }: any) {
+  const isCritical = val >= 90;
+  const isHot = val >= 80;
+  const isWarm = val >= 65;
+  const col = isCritical ? C.critical : isHot ? C.hot : isWarm ? C.temp : baseColor;
+  const bg = isCritical ? col : col + "22";
+  const textColor = isCritical ? "#ffffff" : col;
+  const borderCol = isCritical ? col : col + "44";
+
   return (
     <span style={{
-      background: col + "22", color: col, border: `1px solid ${col}44`,
-      borderRadius: 6, padding: "2px 8px", fontSize: 11, fontFamily: "monospace", fontWeight: 700
-    }}>🌡 {val}°C</span>
+      background: bg, color: textColor, border: `1px solid ${borderCol}`, borderRadius: 6, 
+      padding: "2px 8px", fontSize: 11, fontFamily: "monospace", fontWeight: 700, transition: "all 0.3s ease"
+    }}>
+      {label} {Math.round(val)}°C
+    </span>
+  );
+}
+
+// ── info badge (generico) ─────────────────────────────────────────────────────
+export function InfoBadge({ val, color, icon }: any) {
+  return (
+    <span style={{
+      background: color + "22", color: color,  border: `1px solid ${color}44`, borderRadius: 6, 
+      padding: "2px 8px", fontSize: 11, fontFamily: "monospace", fontWeight: 700
+    }}>
+      {icon ? `${icon} ` : ""}{val}
+    </span>
   );
 }
 

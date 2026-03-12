@@ -24,6 +24,7 @@ impl GpuStrategy for NvidiaStrategy {
         GpuStats{
             gpu_usage: device.utilization_rates().unwrap().gpu as f32,
             gpu_temp: device.temperature(TemperatureSensor::Gpu).unwrap() as f32,
+            gpu_max_temp: 0.0,
             vram_used: mem_info.used,
             vram_total: mem_info.total,
         }

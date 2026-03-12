@@ -17,8 +17,10 @@ export function updateCpuData(prev: CpuData,rustData:RustPayload):CpuData{
         ...prev,
         cpuUse: rustData.cpu_stats.cpu_usage,
         cpuTemp: rustData.cpu_temp.cpu_temp,
-        cpuCoresLoad: prev.cpuCoresLoad.map(() => rustData.cpu_stats.cpu_usage * (0.8 + Math.random() * 0.4)),
-        cpuFrequency: 3.6
+        cpuMaxTemp : rustData.cpu_temp.max_temp,
+        cpuCoresLoad: rustData.cpu_stats.cores_load,
+        cpuFrequency: Number(rustData.cpu_stats.frequency.toFixed(2)),
+        physical_cores: rustData.cpu_stats.physical_cores,
     };
 } 
 
@@ -29,6 +31,7 @@ export function updateGpuData(prev: GpuData,rustData:RustPayload):GpuData{
         vramTotal: rustData.gpu_stats.vram_total / 1073741824,
         gpuLoad: rustData.gpu_stats.gpu_usage,
         gpuTemp: rustData.gpu_stats.gpu_temp,
+        gpuMaxTemp: rustData.gpu_stats.gpu_max_temp,
         gpuHistory: [...prev.gpuHistory.slice(1), rustData.gpu_stats.gpu_usage]
     };
 }

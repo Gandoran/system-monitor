@@ -3,8 +3,10 @@ import { CpuData, RamData, GpuData, DiskData, NetworkData } from '../types';
 export const INITIAL_CPU_STATE: CpuData = {
     cpuCoresLoad: Array(8).fill(0),
     cpuTemp: 0,
+    cpuMaxTemp: 0,
     cpuUse: 0,
-    cpuFrequency: 0
+    cpuFrequency: 0,
+    physical_cores: 0,
 };
 
 export const INITIAL_RAM_STATE: RamData = {
@@ -18,6 +20,7 @@ export const INITIAL_GPU_STATE: GpuData = {
     vramUsed: 0,
     gpuLoad: 0,
     gpuTemp: 0,
+    gpuMaxTemp: 0,
     gpuHistory: Array(40).fill(0)
 };
 

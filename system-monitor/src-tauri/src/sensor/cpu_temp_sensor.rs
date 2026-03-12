@@ -22,43 +22,51 @@ extern "system" {
 #[derive(serde::Serialize, Clone)]
 pub struct TempStats {
     pub cpu_temp: f32,
+    pub max_temp: f32,
 }
 
-pub struct TempSensor;
+pub struct TempSensor{
+    max_temp: f32,
+}
 
 impl TempSensor {
     pub fn new() -> Self {
-        Self 
+        Self {
+            max_temp: 0.0,
+        }
     }
 
-    pub fn read(&self) -> TempStats {
-        let mut final_temp;
+    pub fn read(&mut self) -> TempStats {
+        let mut final_temp = 0.0;
         unsafe {
             const FILE_MAP_READ: u32 = 4;
-            // Il nome in codice dell'area di memoria creata da Core Temp
             let name = b"CoreTempMappingObject\0";
             
             // 1. Chiediamo a Windows di aprire l'area di memoria
             let handle = OpenFileMappingA(FILE_MAP_READ, 0, name.as_ptr());
-            if handle.is_null() {
-                return TempStats { cpu_temp: 0.0 }; // Core Temp probabilmente è chiuso
-            }
-
-            // 2. Mappiamo la memoria nella nostra applicazione
-            let map_ptr = MapViewOfFile(handle, FILE_MAP_READ, 0, 0, 0);
-            final_temp = 0.0;
             
-            if !map_ptr.is_null() {
-                // 3. IL VERO HACK: Facciamo finta che quel blocco di RAM grezza sia la nostra struct!
-                let data = &*(map_ptr as *const CoreTempSharedData);
-                final_temp = data.f_temp[0]; // Prendiamo la temperatura del Core 0 
-                // Chiudiamo l'accesso
-                UnmapViewOfFile(map_ptr);
+            // Se troviamo Core Temp, leggiamo!
+            if !handle.is_null() {
+                let map_ptr = MapViewOfFile(handle, FILE_MAP_READ, 0, 0, 0);
+                
+                if !map_ptr.is_null() {
+                    let data = &*(map_ptr as *const CoreTempSharedData);
+                    final_temp = data.f_temp[0]; 
+                    UnmapViewOfFile(map_ptr);
+                }
+                CloseHandle(handle);
             }
-            CloseHandle(handle);
-            TempStats {
-                cpu_temp: final_temp,
-            }
+        }
+
+        // 3. LA LOGICA DEL MASSIMO (fuori dal blocco unsafe per pulizia)
+        // Aggiorniamo la temperatura massima solo se il sensore sta leggendo valori reali (> 0.0)
+        if final_temp > 0.0 {
+            self.max_temp = self.max_temp.max(final_temp);
+        }
+
+        TempStats {
+            cpu_temp: final_temp,
+            max_temp: self.max_temp,
         }
     }
 }

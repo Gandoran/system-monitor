@@ -3,5 +3,6 @@ export interface GpuData {
     vramUsed: number,
     gpuLoad: number,  
     gpuTemp: number,
+    gpuMaxTemp:number,
     gpuHistory: number[]
 }

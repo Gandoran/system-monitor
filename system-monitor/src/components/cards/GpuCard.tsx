@@ -3,9 +3,15 @@ import { GpuData } from "../../types";
 
 export function GpuCard({g}:{g:GpuData}){
   const vramPct = (g.vramUsed / g.vramTotal) * 100;
+  const HeaderBadges = (
+    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+       <TempBadge val={g.gpuMaxTemp} baseColor={C.muted} label="MAX" />
+       <TempBadge val={g.gpuTemp} baseColor={C.gpu} />
+    </div>
+  );
   return (
     <Card accent={C.gpu}>
-      <Title icon="🎮" label="GPU" color={C.gpu} right={<TempBadge val={g.gpuTemp} />} />
+      <Title icon="🎮" label="GPU" color={C.gpu} right={HeaderBadges}/>
       <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
           <Donut pct={g.gpuLoad} color={C.gpu} label="Load" sub="render" />

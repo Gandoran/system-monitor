@@ -4,6 +4,7 @@ use super::gpu_strategy::nvidia_strategy::NvidiaStrategy;
 pub struct GpuStats {
     pub gpu_usage: f32,
     pub gpu_temp: f32,
+    pub gpu_max_temp: f32,
     pub vram_used: u64,
     pub vram_total: u64,
 }
@@ -13,8 +14,8 @@ pub trait GpuStrategy {
 }
 
 pub struct GpuSensor {
-    // Option perché potremmo non avere nessuna GPU compatibile nel PC
-    strategy: Option<Box<dyn GpuStrategy>>, 
+    strategy: Option<Box<dyn GpuStrategy>>,
+    gpu_max_temp: f32, 
 }
 
 impl GpuSensor {
@@ -25,14 +26,18 @@ impl GpuSensor {
             Ok(nv) => Some(Box::new(nv)),
             Err(_) => None,
         };
-        Self { strategy }
+        Self { strategy, gpu_max_temp: 0.0 }
     }
 
-    pub fn read(&self) -> GpuStats {
-        // Se abbiamo una strategia valida, leggiamo i dati, altrimenti restituiamo tutti 0
-        match &self.strategy {
+    pub fn read(&mut self) -> GpuStats {
+        let mut stats=match &self.strategy {
             Some(strat) => strat.read(),
-            None => GpuStats { gpu_usage: 0.0, gpu_temp: 0.0, vram_used: 0, vram_total: 0 },
+            None => GpuStats { gpu_usage: 0.0, gpu_temp: 0.0, gpu_max_temp: 0.0, vram_used: 0, vram_total: 0 },
+        };
+        if stats.gpu_temp > 0.0 {
+            self.gpu_max_temp = self.gpu_max_temp.max(stats.gpu_temp);
         }
+        stats.gpu_max_temp = self.gpu_max_temp;
+        stats
     }
 }
