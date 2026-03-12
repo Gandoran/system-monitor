@@ -32,5 +32,6 @@ export const INITIAL_DISK_STATE: DiskData = {
 export const INITIAL_NETWORK_STATE: NetworkData = {
     download: 0,
     upload: 0,
-    netHistory: Array(40).fill(0)
+    netHistoryDownload: Array(60).fill(0),
+    netHistoryUpload: Array(60).fill(0)
 };

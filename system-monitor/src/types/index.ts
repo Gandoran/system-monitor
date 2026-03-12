@@ -9,5 +9,6 @@ export interface RustPayload {
     cpu_temp: { cpu_temp: number };
     ram_stats: { ram_used: number; ram_total: number };
     gpu_stats: { gpu_usage: number; gpu_temp: number; vram_used: number; vram_total: number };
-    disk_stats: {disk_write:number,disk_read:number,disk_total_memory:number,disk_used_memory:number,disk_use:number}
+    disk_stats: {disk_write:number,disk_read:number,disk_total_memory:number,disk_used_memory:number,disk_use:number};
+    net_stats: {net_history_download:number[],net_history_upload:number[]};
 }

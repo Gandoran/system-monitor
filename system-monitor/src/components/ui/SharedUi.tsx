@@ -118,3 +118,44 @@ export function Title({ icon, label, color, right }:any) {
     </div>
   );
 }
+
+// ── double sparkline (per Network) ────────────────────────────────────────────
+export function DoubleSparkline({ data1, data2, color1, color2, height = 48 }: any) {
+  const w = 200, h = height;
+
+  const max = Math.max(...data1, ...data2, 1);
+  
+  const getPts = (data: any[]) => data.map((v: any, i: any) => `${(i / (data.length - 1)) * w},${h - (v / max) * h}`).join(" ");
+
+  const pts1 = getPts(data1);
+  const pts2 = getPts(data2);
+
+  const area1 = `${pts1} ${w},${h} 0,${h}`;
+  const area2 = `${pts2} ${w},${h} 0,${h}`;
+
+  const id1 = color1.replace("#", "");
+  const id2 = color2.replace("#", "");
+
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} style={{ width: "100%", height }} preserveAspectRatio="none">
+      <defs>
+        {/* Gradiente Download */}
+        <linearGradient id={`sg${id1}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color1} stopOpacity="0.35" />
+          <stop offset="100%" stopColor={color1} stopOpacity="0" />
+        </linearGradient>
+        {/* Gradiente Upload */}
+        <linearGradient id={`sg${id2}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color2} stopOpacity="0.35" />
+          <stop offset="100%" stopColor={color2} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+
+      <polygon points={area2} fill={`url(#sg${id2})`} />
+      <polyline points={pts2} fill="none" stroke={color2} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+
+      <polygon points={area1} fill={`url(#sg${id1})`} />
+      <polyline points={pts1} fill="none" stroke={color1} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}

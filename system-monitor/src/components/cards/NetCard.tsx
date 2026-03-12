@@ -1,17 +1,25 @@
-import { C,Sparkline, Card, Title } from "../ui/SharedUi";
+import { C,DoubleSparkline, Card, Title } from "../ui/SharedUi";
 import { NetworkData } from "../../types";
 
 
-export function NetCard({n}:{n:NetworkData}) {
+export function NetCard({n}: {n: NetworkData}) {
   const maxNet = 100;
   return (
     <Card accent={C.net}>
       <Title icon="🌐" label="NETWORK" color={C.net} />
-      <Sparkline data={n.netHistory} color={C.net} height={52} />
+  
+      <DoubleSparkline 
+        data1={n.netHistoryDownload} 
+        data2={n.netHistoryUpload} 
+        color1={C.net} 
+        color2={C.gpu} 
+        height={52} 
+      />
+      
       <div style={{ display: "flex", gap: 12, marginTop: 12 }}>
         {[
           { l: "↓ Download", v: `${n.download.toFixed(1)} MB/s`, pct: (n.download / maxNet) * 100, c: C.net },
-          { l: "↑ Upload",   v: `${n.upload.toFixed(1)} MB/s`,  pct: (n.upload  / maxNet) * 100, c: C.gpu },
+          { l: "↑ Upload",   v: `${n.upload.toFixed(1)} MB/s`,   pct: (n.upload   / maxNet) * 100, c: C.gpu },
         ].map(x => (
           <div key={x.l} style={{ flex: 1 }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>

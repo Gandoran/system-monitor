@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { RustPayload } from '../types';
 import { listen } from "@tauri-apps/api/event";
-import { updateCpuData, updateDiskData, updateGpuData, updateRamData } from '../utils/adapter';
+import { updateCpuData, updateDiskData, updateGpuData, updateNetworkData, updateRamData } from '../utils/adapter';
 import { INITIAL_CPU_STATE, INITIAL_RAM_STATE, INITIAL_GPU_STATE, INITIAL_DISK_STATE, INITIAL_NETWORK_STATE } from '../constants/defaultStates'
 
 export function useSystemMonitor() {
@@ -20,6 +20,7 @@ export function useSystemMonitor() {
                 setRam(prev => updateRamData(prev,data));
                 setGpu(prev => updateGpuData(prev,data));
                 setDisk(prev => updateDiskData(prev,data));
+                setNetwork(prev => updateNetworkData(prev,data));
             });
         }
 
