@@ -16,8 +16,7 @@ impl RamSensor {
             sys: System::new(), 
         }
     }
-
-    // L'Azione: Aggiorna i dati e restituisce la nostra struct RamStats
+    
     pub fn read(&mut self) -> RamStats {
         self.sys.refresh_memory();
         RamStats{

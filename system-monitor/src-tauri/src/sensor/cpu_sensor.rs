@@ -15,8 +15,7 @@ impl CpuSensor{
             sys: System::new(), 
         }
     }
-
-    // L'Azione: Aggiorna i dati e restituisce la nostra struct RamStats
+    
     pub fn read(&mut self) -> CpuStats {
         self.sys.refresh_cpu_usage();
         CpuStats{

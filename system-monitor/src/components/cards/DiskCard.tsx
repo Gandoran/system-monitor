@@ -15,9 +15,9 @@ export function DiskCard({d}:{d:DiskData}){
         <Donut pct={usedPct} color={C.disk} label="Used" sub={`${d.diskTotalMemory}GB`} />
         <div style={{ flex: 1 }}>
           <HBar pct={(d.diskRead / maxIO) * 100} color={C.disk}
-            label="Read" value={`${Math.round(d.diskRead)} MB/s`} />
+            label="Read" value={`${d.diskRead} MB/s`} />
           <HBar pct={(d.diskWrite / maxIO) * 100} color={C.temp}
-            label="Write" value={`${Math.round(d.diskWrite)} MB/s`} />
+            label="Write" value={`${d.diskWrite} MB/s`} />
           <div style={{ marginTop: 12 }}>
             {/* storage bar */}
             <div style={{ background: C.border, borderRadius: 6, height: 10, overflow: "hidden" }}>

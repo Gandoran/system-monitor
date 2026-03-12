@@ -1,6 +1,7 @@
 use super::gpu_sensor::{GpuSensor, GpuStats};
 use super::cpu_sensor::{CpuSensor, CpuStats};
 use super::ram_sensor::{RamSensor, RamStats};
+use super::disk_sensor::{DiskSensor, DiskStats};
 use super::cpu_temp_sensor::{TempSensor, TempStats};
 
 #[derive(serde::Serialize, Clone)]
@@ -9,13 +10,15 @@ pub struct SystemStats {
     pub cpu_stats: CpuStats,
     pub cpu_temp: TempStats,
     pub ram_stats: RamStats,
+    pub disk_stats : DiskStats
 }
 
 pub struct HardwareOrchestrator{
     cpu_sensor : CpuSensor,
     cpu_temp_sensor : TempSensor,
     gpu_sensor : GpuSensor,
-    ram_sensor : RamSensor
+    ram_sensor : RamSensor,
+    disk_sensor : DiskSensor
 }
 
 impl HardwareOrchestrator{
@@ -24,7 +27,8 @@ impl HardwareOrchestrator{
             cpu_sensor : CpuSensor::new(),
             cpu_temp_sensor : TempSensor::new(),
             gpu_sensor : GpuSensor::new(),
-            ram_sensor : RamSensor::new(),  
+            ram_sensor : RamSensor::new(),
+            disk_sensor : DiskSensor::new() 
         }
     }
 
@@ -33,7 +37,8 @@ impl HardwareOrchestrator{
             gpu_stats : self.gpu_sensor.read(),
             cpu_stats : self.cpu_sensor.read(),
             cpu_temp : self.cpu_temp_sensor.read(),
-            ram_stats : self.ram_sensor.read()
+            ram_stats : self.ram_sensor.read(),
+            disk_stats : self.disk_sensor.read()
         }
     }
 }

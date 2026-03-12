@@ -1,4 +1,4 @@
-import { CpuData, GpuData, RamData, RustPayload} from '../types';
+import { CpuData, DiskData, GpuData, RamData, RustPayload} from '../types';
 
 export function updateRamData(prev: RamData, rustData: RustPayload):RamData{
     const ramUsedGB = rustData.ram_stats.ram_used / 1073741824;
@@ -31,4 +31,15 @@ export function updateGpuData(prev: GpuData,rustData:RustPayload):GpuData{
         gpuTemp: rustData.gpu_stats.gpu_temp,
         gpuHistory: [...prev.gpuHistory.slice(1), rustData.gpu_stats.gpu_usage]
     };
+}
+
+export function updateDiskData(prev: DiskData,rustData:RustPayload):DiskData{
+    return {
+        ...prev,
+        diskRead: Number((rustData.disk_stats.disk_read / 1048576).toFixed(1)),
+        diskWrite: Number((rustData.disk_stats.disk_write / 1048576).toFixed(1)),
+        diskTotalMemory: Math.round(rustData.disk_stats.disk_total_memory / 1073741824),
+        diskUsedMemory: Math.round(rustData.disk_stats.disk_used_memory / 1073741824),
+        diskUse: rustData.disk_stats.disk_use,
+    }
 }
