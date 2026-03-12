@@ -18,7 +18,7 @@ export const C = {
 export function Sparkline({ data, color, height = 48 }:any) {
   const w = 200, h = height;
   const max = Math.max(...data, 1);
-  const pts = data.map((v, i) => `${(i / (data.length - 1)) * w},${h - (v / max) * h}`).join(" ");
+  const pts = data.map((v:any, i:any) => `${(i / (data.length - 1)) * w},${h - (v / max) * h}`).join(" ");
   const area = `${pts} ${w},${h} 0,${h}`;
   return (
     <svg viewBox={`0 0 ${w} ${h}`} style={{ width: "100%", height }} preserveAspectRatio="none">
