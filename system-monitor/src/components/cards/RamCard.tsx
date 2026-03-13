@@ -21,7 +21,7 @@ export function RamCard({ra}:{ra:RamData}){
     <Card accent={C.ram}>
       <Title icon="🧠" label="RAM" color={C.ram} right={
         <span style={{ fontSize: 11, color: C.muted, fontFamily: "monospace" }}>
-          {ra.ramUsed.toFixed(1)} / {ra.ramTotal} GB
+          {ra.ramUsed.toFixed(2)} / {ra.ramTotal.toFixed(2)} GB
         </span>
       } />
       <div style={{ display: "flex", gap: 16, alignItems: "center" }}>

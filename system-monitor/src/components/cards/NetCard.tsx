@@ -7,15 +7,7 @@ export function NetCard({n}: {n: NetworkData}) {
   return (
     <Card accent={C.net}>
       <Title icon="🌐" label="NETWORK" color={C.net} />
-  
-      <DoubleSparkline 
-        data1={n.netHistoryDownload} 
-        data2={n.netHistoryUpload} 
-        color1={C.net} 
-        color2={C.gpu} 
-        height={52} 
-      />
-      
+      <DoubleSparkline data1={n.netHistoryDownload} data2={n.netHistoryUpload} color1={C.net} color2={C.gpu} height={52} />
       <div style={{ display: "flex", gap: 12, marginTop: 12 }}>
         {[
           { l: "↓ Download", v: `${n.download.toFixed(1)} MB/s`, pct: (n.download / maxNet) * 100, c: C.net },

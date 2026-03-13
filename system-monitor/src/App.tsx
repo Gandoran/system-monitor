@@ -1,23 +1,17 @@
-// FILE: App.tsx
 import { useState } from "react";
 import { useSystemMonitor } from "./hooks/useSystemMonitor";
 import { C } from "./components/ui/SharedUi";
 import { Header } from "./components/layout/Header";
 import { CpuCard,DiskCard, GpuCard, NetCard, RamCard } from "./components/cards";
 import { SysBar } from "./components/layout/SysBar";
+import { SummaryPills } from "./components/cards/SummaryPills";
 
 export default function App() {
   const { cpu, ram, gpu, disk, network } = useSystemMonitor();
   const [activeTab, setActiveTab] = useState("Overview");
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: C.bg,      
-      color: C.text,         
-      fontFamily: "monospace", 
-      padding: "20px 24px",
-      boxSizing: "border-box"
+    <div style={{minHeight: "100vh",background: C.bg, color: C.text, fontFamily: "monospace", padding: "20px 24px", boxSizing: "border-box"
     }}>
       <style>{`
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
@@ -26,19 +20,19 @@ export default function App() {
         ::-webkit-scrollbar-track { background: ${C.bg}; }
         ::-webkit-scrollbar-thumb { background: ${C.border}; border-radius: 3px; }
       `}</style>
-
-      {/* 2. INSERIAMO L'HEADER IN ALTO */}
       <Header activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <SysBar 
-         hostname="Rust-PC" 
-         os="Windows 11" 
-         uptime="2h 14m" 
-         cpuTemp={cpu.cpuTemp} 
-         gpuTemp={gpu.gpuTemp} 
-      />
+      <SysBar cpuTemp={cpu.cpuTemp} gpuTemp={gpu.gpuTemp} />
 
-      {/* 3. SOTTO L'HEADER, MOSTRA LE CARD SOLO SE SIAMO SU OVERVIEW */}
+      <div style={{ marginBottom: 20 }}>
+        <SummaryPills 
+          c={cpu} 
+          r={ram} 
+          g={gpu} 
+          n={network} 
+        />
+      </div>
+      
       {activeTab === "Overview" && (
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "auto auto auto", gap: 14 }}>
             <CpuCard c={cpu}/>
@@ -49,7 +43,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Se clicchi su History, la griglia scompare e appare questo! */}
       {activeTab === "History" && (
         <div>
             <h2>Storico in costruzione...</h2>
