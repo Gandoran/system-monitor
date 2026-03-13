@@ -1,4 +1,4 @@
-import { CpuData, DiskData, GpuData, NetworkData, RamData, RustPayload} from '../types';
+import { CpuData, DiskData, GpuData, NetworkData, RamData, RustPayload, uptimeData} from '../types';
 
 export function updateRamData(prev: RamData, rustData: RustPayload):RamData{
     const ramUsedGB = rustData.ram_stats.ram_used / 1073741824;
@@ -54,5 +54,12 @@ export function updateNetworkData(prev:NetworkData,rustData:RustPayload):Network
         upload : rustData.net_stats.net_history_upload[rustData.net_stats.net_history_upload.length-1] || 0,
         netHistoryDownload: rustData.net_stats.net_history_download,
         netHistoryUpload : rustData.net_stats.net_history_upload,
+    }
+}
+
+export function updateUptime(prev:uptimeData,rustData:RustPayload):uptimeData{
+    return{
+        ...prev,
+        uptime : rustData.uptime_stats.uptime,
     }
 }

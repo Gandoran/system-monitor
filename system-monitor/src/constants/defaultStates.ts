@@ -1,4 +1,4 @@
-import { CpuData, RamData, GpuData, DiskData, NetworkData } from '../types';
+import { CpuData, RamData, GpuData, DiskData, NetworkData, uptimeData } from '../types';
 
 export const INITIAL_CPU_STATE: CpuData = {
     cpuCoresLoad: Array(8).fill(0),
@@ -38,3 +38,7 @@ export const INITIAL_NETWORK_STATE: NetworkData = {
     netHistoryDownload: Array(60).fill(0),
     netHistoryUpload: Array(60).fill(0)
 };
+
+export const INITIAL_UPTIME_STATE:  uptimeData = {
+    uptime: 0,
+}

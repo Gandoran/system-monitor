@@ -5,10 +5,14 @@ use tauri::Emitter;
 use std::thread;
 use std::time::Duration;
 mod sensor;
+mod command;
 use sensor::hardware_orchestrator::HardwareOrchestrator;
 
 fn main() {
     tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![
+            command::system_command::get_static_sys_info
+        ])
         .setup(|app| {
             let app_handle = app.handle().clone(); 
             thread::spawn(move || {

@@ -4,6 +4,7 @@ use super::ram_sensor::{RamSensor, RamStats};
 use super::disk_sensor::{DiskSensor, DiskStats};
 use super::net_sensor::{NetSensor,NetStats};
 use super::cpu_temp_sensor::{TempSensor, TempStats};
+use super::uptime_sensor::{UptimeSensor, UptimeStats};
 
 #[derive(serde::Serialize, Clone)]
 pub struct SystemStats {
@@ -12,7 +13,8 @@ pub struct SystemStats {
     pub cpu_temp: TempStats,
     pub ram_stats: RamStats,
     pub disk_stats : DiskStats,
-    pub net_stats : NetStats
+    pub net_stats : NetStats,
+    pub uptime_stats : UptimeStats,
 }
 
 pub struct HardwareOrchestrator{
@@ -21,7 +23,8 @@ pub struct HardwareOrchestrator{
     gpu_sensor : GpuSensor,
     ram_sensor : RamSensor,
     disk_sensor : DiskSensor,
-    net_sensor : NetSensor
+    net_sensor : NetSensor,
+    uptime_sensor : UptimeSensor,
 }
 
 impl HardwareOrchestrator{
@@ -32,7 +35,8 @@ impl HardwareOrchestrator{
             gpu_sensor : GpuSensor::new(),
             ram_sensor : RamSensor::new(),
             disk_sensor : DiskSensor::new(), 
-            net_sensor : NetSensor::new()
+            net_sensor : NetSensor::new(),
+            uptime_sensor : UptimeSensor::new(),
         }
     }
 
@@ -43,7 +47,8 @@ impl HardwareOrchestrator{
             cpu_temp : self.cpu_temp_sensor.read(),
             ram_stats : self.ram_sensor.read(),
             disk_stats : self.disk_sensor.read(),
-            net_stats : self.net_sensor.read()
+            net_stats : self.net_sensor.read(),
+            uptime_stats : self.uptime_sensor.read(),
         }
     }
 }

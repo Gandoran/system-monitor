@@ -5,7 +5,7 @@ export function GpuCard({g}:{g:GpuData}){
   const vramPct = (g.vramUsed / g.vramTotal) * 100;
   const HeaderBadges = (
     <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-       <TempBadge val={g.gpuMaxTemp} baseColor={C.muted} label="MAX" />
+       <TempBadge val={g.gpuMaxTemp} baseColor={C.gpu} label="MAX" />
        <TempBadge val={g.gpuTemp} baseColor={C.gpu} />
     </div>
   );

@@ -1,14 +1,16 @@
 import { C } from "../ui/SharedUi";
+import { useStaticSystemInfo } from "../../hooks/useStaticSystemInfo.ts";
+import { useSystemMonitor } from "../../hooks/useSystemMonitor.ts";
+import { formatUptime } from "../../utils/timeFormatters.ts";
 
 interface SysBarProps {
-  hostname: string;
-  os: string;
-  uptime: string;
   cpuTemp: number;
   gpuTemp: number;
 }
 
-export function SysBar({ hostname, os, uptime, cpuTemp, gpuTemp }: SysBarProps) {
+export function SysBar({cpuTemp, gpuTemp }: SysBarProps) {
+  const { hostname, os_name } = useStaticSystemInfo();
+  const {uptime} = useSystemMonitor();
   return (
     <div style={{
       background: C.surface, border: `1px solid ${C.border}`,
@@ -18,8 +20,8 @@ export function SysBar({ hostname, os, uptime, cpuTemp, gpuTemp }: SysBarProps) 
       marginBottom: 18
     }}>
       {[
-        { icon: "🖥", label: hostname, sub: os }, 
-        { icon: "⏱", label: "Uptime", sub: uptime },
+        { icon: "🖥", label: hostname, sub: os_name }, 
+        { icon: "⏱", label: "Uptime", sub: formatUptime(uptime.uptime as any) },
         { icon: "🔥", label: "CPU Temp", sub: `${cpuTemp}°C` },
         { icon: "🎮", label: "GPU Temp", sub: `${gpuTemp}°C` },
       ].map(x => (
