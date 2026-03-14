@@ -3,7 +3,6 @@ import { CpuData, DiskData, GpuData, NetworkData, RamData, RustPayload, uptimeDa
 export function updateRamData(prev: RamData, rustData: RustPayload):RamData{
     const ramUsedGB = rustData.ram_stats.ram_used / 1073741824;
     const ramTotalGB = rustData.ram_stats.ram_total / 1073741824;
-
     return {
         ...prev,
         ramUsed: ramUsedGB,
@@ -54,6 +53,11 @@ export function updateNetworkData(prev:NetworkData,rustData:RustPayload):Network
         upload : rustData.net_stats.net_history_upload[rustData.net_stats.net_history_upload.length-1] || 0,
         netHistoryDownload: rustData.net_stats.net_history_download,
         netHistoryUpload : rustData.net_stats.net_history_upload,
+        netTotalDown: rustData.net_stats.tot_download,
+        netTotalUp: rustData.net_stats.tot_upload,
+        netInterface: "Wi-Fi",
+        netIp: "192.168.1.XX",
+        netPing: rustData.net_stats.net_ping,
     }
 }
 

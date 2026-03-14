@@ -181,3 +181,17 @@ export function DoubleSparkline({ data1, data2, color1, color2, height = 48 }: a
     </svg>
   );
 }
+
+// ── stat row ──────────────────────────────────────────────────────────────────
+export function StatRow({ items }: { items: { label: string, value: string | number, color: string }[] }) {
+  return (
+    <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
+      {items.map(x => (
+        <div key={x.label} style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <span style={{ fontSize: 9, color: C.muted, fontFamily: "monospace", letterSpacing: 0.5 }}>{x.label}</span>
+          <span style={{ fontSize: 11, color: x.color, fontFamily: "monospace", fontWeight: 700 }}>{x.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
