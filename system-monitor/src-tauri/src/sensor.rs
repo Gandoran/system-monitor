@@ -10,3 +10,4 @@ pub mod hardware_orchestrator;
 pub mod gpu_strategy;
 
 pub mod sys_info_sensor;
+pub mod net_identity;

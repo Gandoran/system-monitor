@@ -41,7 +41,6 @@ export function NetCard({n}: {n: NetworkData}) {
       </div>
       <div style={{ marginTop: 12 }}>
         <StatRow items={[
-          //TODO SISTEMARE IL TOFIXED (Primo avvio crasha..)
           { label: "TOTAL ↓", value: `${(n.netTotalDown || 0).toFixed(2)} GB`, color: C.net },
           { label: "TOTAL ↑", value: `${(n.netTotalUp || 0).toFixed(2)} GB`,   color: C.gpu },
           { label: "PING",    value: `${n.netPing} ms`, color: pingCol },

@@ -55,8 +55,8 @@ export function updateNetworkData(prev:NetworkData,rustData:RustPayload):Network
         netHistoryUpload : rustData.net_stats.net_history_upload,
         netTotalDown: rustData.net_stats.tot_download,
         netTotalUp: rustData.net_stats.tot_upload,
-        netInterface: "Wi-Fi",
-        netIp: "192.168.1.XX",
+        netInterface: rustData.net_stats.net_interface || "N/A",
+        netIp: rustData.net_stats.net_ip || "127.0.0.1",
         netPing: rustData.net_stats.net_ping,
     }
 }

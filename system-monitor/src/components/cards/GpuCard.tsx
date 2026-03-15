@@ -22,8 +22,8 @@ export function GpuCard({g}:{g:GpuData}){
           <Sparkline data={g.gpuHistory} color={C.gpu} height={64} />
           <div style={{ marginTop: 10 }}>
             <HBar pct={g.gpuLoad} color={C.gpu} label="GPU Load" value={`${Math.round(g.gpuLoad)}%`} />
-            <HBar pct={vramPct} color={C.net} label="VRAM" value={`${g.vramUsed.toFixed(1)} / ${g.vramTotal} GB`} />
-          </div>vramUsed
+            <HBar pct={vramPct} color={C.net} label="VRAM" value={`${g.vramUsed.toFixed(2)} / ${g.vramTotal} GB`} />
+          </div>
         </div>
       </div>
     </Card>
