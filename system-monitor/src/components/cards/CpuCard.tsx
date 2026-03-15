@@ -1,14 +1,9 @@
-import { C, Donut, HBar, TempBadge, Card, Title, InfoBadge } from "../ui/SharedUi";
+import { C, Donut, HBar, TempBadge, Card, Title, StatRow } from "../ui/SharedUi";
 import { CpuData } from "../../types";
 
 export function CpuCard({ c }: { c: CpuData }) {
-
   const HeaderBadges = (
     <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-      <InfoBadge 
-        val={`${c.physical_cores}C / ${c.cpuCoresLoad.length}T`} 
-        color={C.cpu} 
-      />
       <span title="Max Temperature">
         <TempBadge val={c.cpuMaxTemp} baseColor={C.cpu} label="MAX" />
       </span>
@@ -17,7 +12,6 @@ export function CpuCard({ c }: { c: CpuData }) {
       </span>
     </div>
   );
-
   return (
     <Card accent={C.cpu}>
       <Title icon="⚡" label="CPU" color={C.cpu} right={HeaderBadges} />
@@ -30,8 +24,13 @@ export function CpuCard({ c }: { c: CpuData }) {
             ))}
           </div>
         </div>
-        
       </div>
+      <StatRow items={[
+        { label: "MODEL", value: "Ciao!", color: C.text },
+        { label: "FREQUENCY", value: c.cpuFrequency, color: C.text },
+        { label: "CORE", value: c.physical_cores, color: C.cpu },
+        { label: "THREADS", value: c.cpuCoresLoad.length, color: C.cpu },
+      ]}/>
     </Card>
   );
 }

@@ -21,7 +21,10 @@ export const INITIAL_GPU_STATE: GpuData = {
     gpuLoad: 0,
     gpuTemp: 0,
     gpuMaxTemp: 0,
-    gpuHistory: Array(40).fill(0)
+    gpuHistory: Array(40).fill(0),
+    model: '',
+    power: 0,
+    fanSpeed: 0,
 };
 
 export const INITIAL_DISK_STATE: DiskData = {
@@ -36,7 +39,12 @@ export const INITIAL_NETWORK_STATE: NetworkData = {
     download: 0,
     upload: 0,
     netHistoryDownload: Array(60).fill(0),
-    netHistoryUpload: Array(60).fill(0)
+    netHistoryUpload: Array(60).fill(0),
+    netTotalDown: 0, 
+    netTotalUp: 0,
+    netInterface: "NaN",
+    netIp: "0.0.0.0",
+    netPing: 0,
 };
 
 export const INITIAL_UPTIME_STATE:  uptimeData = {

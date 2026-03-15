@@ -36,8 +36,8 @@ export default function App() {
       {activeTab === "Overview" && (
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "auto auto auto", gap: 14 }}>
             <CpuCard c={cpu}/>
-            <RamCard ra={ram}/>
             <GpuCard g={gpu}/>
+            <RamCard ra={ram}/>
             <DiskCard d={disk}/> 
             <NetCard n={network}/>
         </div>

@@ -5,4 +5,8 @@ export interface GpuData {
     gpuTemp: number,
     gpuMaxTemp:number,
     gpuHistory: number[]
+    model: string,
+    driver: string,
+    power: number,
+    fanSpeed: number,
 }

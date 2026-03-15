@@ -14,6 +14,7 @@ export const C = {
   critical:"#dc2626",   // red-600 (Rosso puro e intenso per i 90°C+)
   text:    "#e2e8f0",
   muted:   "#64748b",
+  fan:     "#e879f9",
 };
 
 // ── mini sparkline ────────────────────────────────────────────────────────────
@@ -144,38 +145,29 @@ export function Title({ icon, label, color, right }:any) {
 // ── double sparkline (per Network) ────────────────────────────────────────────
 export function DoubleSparkline({ data1, data2, color1, color2, height = 48 }: any) {
   const w = 200, h = height;
-
   const max = Math.max(...data1, ...data2, 1);
-  
   const getPts = (data: any[]) => data.map((v: any, i: any) => `${(i / (data.length - 1)) * w},${h - (v / max) * h}`).join(" ");
-
   const pts1 = getPts(data1);
   const pts2 = getPts(data2);
-
   const area1 = `${pts1} ${w},${h} 0,${h}`;
   const area2 = `${pts2} ${w},${h} 0,${h}`;
-
   const id1 = color1.replace("#", "");
   const id2 = color2.replace("#", "");
 
   return (
     <svg viewBox={`0 0 ${w} ${h}`} style={{ width: "100%", height }} preserveAspectRatio="none">
       <defs>
-        {/* Gradiente Download */}
         <linearGradient id={`sg${id1}`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor={color1} stopOpacity="0.35" />
           <stop offset="100%" stopColor={color1} stopOpacity="0" />
         </linearGradient>
-        {/* Gradiente Upload */}
         <linearGradient id={`sg${id2}`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor={color2} stopOpacity="0.35" />
           <stop offset="100%" stopColor={color2} stopOpacity="0" />
         </linearGradient>
       </defs>
-
       <polygon points={area2} fill={`url(#sg${id2})`} />
       <polyline points={pts2} fill="none" stroke={color2} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-
       <polygon points={area1} fill={`url(#sg${id1})`} />
       <polyline points={pts1} fill="none" stroke={color1} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
@@ -185,7 +177,7 @@ export function DoubleSparkline({ data1, data2, color1, color2, height = 48 }: a
 // ── stat row ──────────────────────────────────────────────────────────────────
 export function StatRow({ items }: { items: { label: string, value: string | number, color: string }[] }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
+    <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginTop: 10, paddingTop: 10, borderTop: `1px solid ${C.border}44` }}>
       {items.map(x => (
         <div key={x.label} style={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <span style={{ fontSize: 9, color: C.muted, fontFamily: "monospace", letterSpacing: 0.5 }}>{x.label}</span>
