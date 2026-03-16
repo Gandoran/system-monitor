@@ -3,11 +3,17 @@ import { CpuData, DiskData, GpuData, NetworkData, RamData, RustPayload, uptimeDa
 export function updateRamData(prev: RamData, rustData: RustPayload):RamData{
     const ramUsedGB = rustData.ram_stats.ram_used / 1073741824;
     const ramTotalGB = rustData.ram_stats.ram_total / 1073741824;
+    const swapUsedGB =  rustData.ram_stats.swap_used / 1073741824;
+    const swapTotalGB = rustData.ram_stats.swap_total / 1073741824;;
     return {
         ...prev,
         ramUsed: ramUsedGB,
         ramTotal: ramTotalGB,
-        ramHistory: [...prev.ramHistory.slice(1), (ramUsedGB / ramTotalGB) * 100]
+        ramAvailable: rustData.ram_stats.ram_available / 1073741824,
+        swapUsed: swapUsedGB,
+        swapTotal: swapTotalGB,
+        ramHistory: [...prev.ramHistory.slice(1), (ramUsedGB / ramTotalGB) * 100],
+        swapHistory:  [...prev.swapHistory.slice(1), (swapUsedGB / swapTotalGB) * 100],
     };
 }
 

@@ -10,9 +10,13 @@ export const INITIAL_CPU_STATE: CpuData = {
 };
 
 export const INITIAL_RAM_STATE: RamData = {
-    ramTotal: 16, 
+    ramTotal: 16,
     ramUsed: 0,
-    ramHistory: Array(40).fill(0)
+    ramAvailable: 0,
+    swapUsed: 0,
+    swapTotal: 0,
+    ramHistory: Array(40).fill(0),
+    swapHistory: Array(40).fill(0),
 };
 
 export const INITIAL_GPU_STATE: GpuData = {
@@ -25,6 +29,7 @@ export const INITIAL_GPU_STATE: GpuData = {
     model: '',
     power: 0,
     fanSpeed: 0,
+    driver: '',
 };
 
 export const INITIAL_DISK_STATE: DiskData = {
