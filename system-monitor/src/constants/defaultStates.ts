@@ -1,6 +1,7 @@
 import { CpuData, RamData, GpuData, DiskData, NetworkData, uptimeData } from '../types';
 
 export const INITIAL_CPU_STATE: CpuData = {
+    cpuName: '',
     cpuCoresLoad: Array(8).fill(0),
     cpuTemp: 0,
     cpuMaxTemp: 0,
@@ -33,11 +34,14 @@ export const INITIAL_GPU_STATE: GpuData = {
 };
 
 export const INITIAL_DISK_STATE: DiskData = {
+    diskName: '',
+    fileSystem: '',
+    diskType: '',
     diskRead: 0,
     diskWrite: 0,
     diskTotalMemory: 512,
     diskUsedMemory: 0,
-    diskUse: 0
+    diskUse: 0,
 };
 
 export const INITIAL_NETWORK_STATE: NetworkData = {

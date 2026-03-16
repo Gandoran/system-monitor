@@ -26,7 +26,7 @@ export function CpuCard({ c }: { c: CpuData }) {
         </div>
       </div>
       <StatRow items={[
-        { label: "MODEL", value: "Ciao!", color: C.text },
+        { label: "MODEL", value: c.cpuName, color: C.text },
         { label: "FREQUENCY", value: c.cpuFrequency, color: C.text },
         { label: "CORE", value: c.physical_cores, color: C.cpu },
         { label: "THREADS", value: c.cpuCoresLoad.length, color: C.cpu },

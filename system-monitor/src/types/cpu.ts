@@ -1,4 +1,5 @@
 export interface CpuData{
+    cpuName: string,
     cpuCoresLoad : number[],
     cpuTemp : number,
     cpuMaxTemp : number,

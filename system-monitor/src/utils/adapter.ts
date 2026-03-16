@@ -20,6 +20,7 @@ export function updateRamData(prev: RamData, rustData: RustPayload):RamData{
 export function updateCpuData(prev: CpuData,rustData:RustPayload):CpuData{
     return {
         ...prev,
+        cpuName: rustData.cpu_stats.cpu_name,
         cpuUse: rustData.cpu_stats.cpu_usage,
         cpuTemp: rustData.cpu_temp.cpu_temp,
         cpuMaxTemp : rustData.cpu_temp.max_temp,
@@ -48,6 +49,9 @@ export function updateGpuData(prev: GpuData,rustData:RustPayload):GpuData{
 export function updateDiskData(prev: DiskData,rustData:RustPayload):DiskData{
     return {
         ...prev,
+        diskName: rustData.disk_stats.disk_name,
+        fileSystem: rustData.disk_stats.file_system,
+        diskType: rustData.disk_stats.disk_type,
         diskRead: Number((rustData.disk_stats.disk_read / 1048576).toFixed(1)),
         diskWrite: Number((rustData.disk_stats.disk_write / 1048576).toFixed(1)),
         diskTotalMemory: Math.round(rustData.disk_stats.disk_total_memory / 1073741824),
