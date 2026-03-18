@@ -1,7 +1,7 @@
 use super::gpu_sensor::{GpuSensor, GpuStats};
 use super::cpu_sensor::{CpuSensor, CpuStats};
-use super::ram_sensor::{RamSensor, RamStats};
-use super::disk_sensor::{DiskSensor, DiskStats};
+use super::ram_sensor::{RamSensor, RamMetrics};
+use super::disk_sensor::{DiskSensor, DiskMetrics};
 use super::net_sensor::{NetSensor,NetStats};
 use super::cpu_temp_sensor::{TempSensor, TempStats};
 use super::uptime_sensor::{UptimeSensor, UptimeStats};
@@ -11,8 +11,8 @@ pub struct SystemStats {
     pub gpu_stats: GpuStats,
     pub cpu_stats: CpuStats,
     pub cpu_temp: TempStats,
-    pub ram_stats: RamStats,
-    pub disk_stats : DiskStats,
+    pub ram_stats: RamMetrics,
+    pub disk_stats : DiskMetrics,
     pub net_stats : NetStats,
     pub uptime_stats : UptimeStats,
 }

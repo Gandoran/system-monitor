@@ -1,5 +1,5 @@
 import { C } from "../ui/SharedUi";
-import { useStaticSystemInfo } from "../../hooks/useStaticSystemInfo.ts";
+import { useStaticSystemInfo } from "../../hooks/static/useStaticSystemInfo.ts";
 import { useSystemMonitor } from "../../hooks/useSystemMonitor.ts";
 import { formatUptime } from "../../utils/timeFormatters.ts";
 

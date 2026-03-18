@@ -1,8 +1,9 @@
 import { CpuData, DiskData, GpuData, NetworkData, RamData, RustPayload, uptimeData} from '../types';
+import { StaticRamInfo } from "../hooks/static/useStaticRamInfo";
 
-export function updateRamData(prev: RamData, rustData: RustPayload):RamData{
+export function updateRamData(prev: RamData, rustData: RustPayload, staticRam: StaticRamInfo):RamData{
     const ramUsedGB = rustData.ram_stats.ram_used / 1073741824;
-    const ramTotalGB = rustData.ram_stats.ram_total / 1073741824;
+    const ramTotalGB = (staticRam.ramTotal || 1) / 1073741824;
     const swapUsedGB =  rustData.ram_stats.swap_used / 1073741824;
     const swapTotalGB = rustData.ram_stats.swap_total / 1073741824;;
     return {
@@ -20,13 +21,11 @@ export function updateRamData(prev: RamData, rustData: RustPayload):RamData{
 export function updateCpuData(prev: CpuData,rustData:RustPayload):CpuData{
     return {
         ...prev,
-        cpuName: rustData.cpu_stats.cpu_name,
         cpuUse: rustData.cpu_stats.cpu_usage,
         cpuTemp: rustData.cpu_temp.cpu_temp,
         cpuMaxTemp : rustData.cpu_temp.max_temp,
         cpuCoresLoad: rustData.cpu_stats.cores_load,
         cpuFrequency: Number(rustData.cpu_stats.frequency.toFixed(2)),
-        physical_cores: rustData.cpu_stats.physical_cores,
     };
 } 
 
@@ -49,12 +48,8 @@ export function updateGpuData(prev: GpuData,rustData:RustPayload):GpuData{
 export function updateDiskData(prev: DiskData,rustData:RustPayload):DiskData{
     return {
         ...prev,
-        diskName: rustData.disk_stats.disk_name,
-        fileSystem: rustData.disk_stats.file_system,
-        diskType: rustData.disk_stats.disk_type,
         diskRead: Number((rustData.disk_stats.disk_read / 1048576).toFixed(1)),
         diskWrite: Number((rustData.disk_stats.disk_write / 1048576).toFixed(1)),
-        diskTotalMemory: Math.round(rustData.disk_stats.disk_total_memory / 1073741824),
         diskUsedMemory: Math.round(rustData.disk_stats.disk_used_memory / 1073741824),
         diskUse: rustData.disk_stats.disk_use,
     }

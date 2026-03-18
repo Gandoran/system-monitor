@@ -1,7 +1,9 @@
 import { C, Donut, HBar, TempBadge, Card, Title, StatRow } from "../ui/SharedUi";
 import { CpuData } from "../../types";
+import { useStaticCpuInfo } from "../../hooks/static/useStaticCpuInfo";
 
 export function CpuCard({ c }: { c: CpuData }) {
+  const cu = useStaticCpuInfo();
   const HeaderBadges = (
     <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
       <span title="Max Temperature">
@@ -26,9 +28,9 @@ export function CpuCard({ c }: { c: CpuData }) {
         </div>
       </div>
       <StatRow items={[
-        { label: "MODEL", value: c.cpuName, color: C.text },
+        { label: "MODEL", value: cu.cpuName, color: C.text },
         { label: "FREQUENCY", value: c.cpuFrequency, color: C.text },
-        { label: "CORE", value: c.physical_cores, color: C.cpu },
+        { label: "CORE", value: cu.physicalCores, color: C.cpu },
         { label: "THREADS", value: c.cpuCoresLoad.length, color: C.cpu },
       ]}/>
     </Card>

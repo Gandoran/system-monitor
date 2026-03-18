@@ -2,9 +2,8 @@ import { useState } from "react";
 import { useSystemMonitor } from "./hooks/useSystemMonitor";
 import { C } from "./components/ui/SharedUi";
 import { Header } from "./components/layout/Header";
-import { CpuCard,DiskCard, GpuCard, NetCard, RamCard } from "./components/cards";
+import { CpuCard,DiskCard, GpuCard, NetCard, RamCard, SummaryPills } from "./components/cards";
 import { SysBar } from "./components/layout/SysBar";
-import { SummaryPills } from "./components/cards/SummaryPills";
 
 export default function App() {
   const { cpu, ram, gpu, disk, network } = useSystemMonitor();

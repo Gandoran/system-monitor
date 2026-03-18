@@ -11,7 +11,10 @@ use sensor::hardware_orchestrator::HardwareOrchestrator;
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            command::system_command::get_static_sys_info
+            command::system_command::get_static_sys_info,
+            command::ram_command::get_static_ram_info,
+            command::cpu_command::get_static_cpu_info,
+            command::disk_command::get_static_disk_info,
         ])
         .setup(|app| {
             let app_handle = app.handle().clone(); 

@@ -1,7 +1,7 @@
 use sysinfo::{Disks, System, ProcessesToUpdate};
 
-//TODO REFACTOR -> classe troppo grande e troppe responsabilità
 #[derive(serde::Serialize, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct DiskIdentity {
     pub disk_name: String,      
     pub file_system: String,    
@@ -17,18 +17,9 @@ pub struct DiskMetrics {
     pub disk_use: f32, 
 }
 
-#[derive(serde::Serialize, Clone)]
-pub struct DiskStats {
-    #[serde(flatten)]
-    pub identity: DiskIdentity,
-    #[serde(flatten)]
-    pub metrics: DiskMetrics,
-}
-
 pub struct DiskSensor {
     disks: Disks,
     sys: System,
-    identity: DiskIdentity,
     max_speed_bps: u64, 
     prev_read: u64,
     prev_write: u64,
@@ -39,31 +30,30 @@ impl DiskSensor {
         let mut disks = Disks::new_with_refreshed_list();
         let sys = System::new();
         let identity = Self::extract_identity(&mut disks);
-        let max_speed_bps = if identity.disk_type == "HDD" {150 * 1024 * 1024} 
-        else {1000 * 1024 * 1024};
-        Self { disks, sys, identity, max_speed_bps, prev_read: 0, prev_write: 0 }
+        let max_speed_bps = if identity.disk_type == "HDD" {150 * 1024 * 1024} else {1000 * 1024 * 1024};
+        Self { disks, sys, max_speed_bps, prev_read: 0, prev_write: 0 }
     }
 
-    pub fn read(&mut self) -> DiskStats {
+    pub fn read(&mut self) -> DiskMetrics {
         self.disks.refresh(true);
         self.sys.refresh_processes(ProcessesToUpdate::All, true);
         let used = Self::calc_used_space(&self.disks);
         let (read_per_sec, write_per_sec) = self.calc_io_rates();
 
-        let total_io_per_sec = read_per_sec + write_per_sec;
-        
-        let disk_use = ((total_io_per_sec as f32 / self.max_speed_bps as f32) * 100.0)
-            .clamp(0.0, 100.0);
+        let total_io_per_sec = read_per_sec + write_per_sec;    
+        let disk_use = ((total_io_per_sec as f32 / self.max_speed_bps as f32) * 100.0).clamp(0.0, 100.0);
 
-        DiskStats {
-            identity: self.identity.clone(), 
-            metrics: DiskMetrics {
-                disk_used_memory: used,
-                disk_read: read_per_sec,
-                disk_write: write_per_sec,
-                disk_use,
-            },
+        DiskMetrics {
+            disk_used_memory: used,
+            disk_read: read_per_sec,
+            disk_write: write_per_sec,
+            disk_use,
         }
+    }
+
+    pub fn get_static_info() -> DiskIdentity {
+        let mut disks = Disks::new_with_refreshed_list();
+        Self::extract_identity(&mut disks)
     }
 
     fn extract_identity(disks: &mut Disks) -> DiskIdentity {

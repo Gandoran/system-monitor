@@ -1,8 +1,11 @@
+import { useStaticDiskInfo } from "../../hooks/static/useStaticDiskInfo";
 import { DiskData } from "../../types";
 import { C, Card, Title, HBar, StatRow, Sparkline } from "../ui/SharedUi";
 
 export function DiskCard({ d }:{d:DiskData}) {
-  const p = (d.diskUsedMemory / d.diskTotalMemory) * 100;
+  const di = useStaticDiskInfo();
+  const tm = Math.round(di.diskTotalMemory / 1073741824)
+  const p = (d.diskUsedMemory / tm) * 100;
 
   return (
     <Card accent={C.disk}>
@@ -11,11 +14,11 @@ export function DiskCard({ d }:{d:DiskData}) {
         <div>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
             <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
-              <span style={{ fontSize: 10, color: C.text, fontFamily: "monospace", fontWeight: 700 }}>{d.diskName}</span>
-              <span style={{ fontSize: 9, color: C.muted, background: C.border, borderRadius: 4, padding: "1px 5px", fontFamily: "monospace" }}>{d.diskType}</span>
-              <span style={{ fontSize: 9, color: C.muted, background: C.border, borderRadius: 4, padding: "1px 5px", fontFamily: "monospace" }}>{d.fileSystem}</span>
+              <span style={{ fontSize: 10, color: C.text, fontFamily: "monospace", fontWeight: 700 }}>{di.diskName}</span>
+              <span style={{ fontSize: 9, color: C.muted, background: C.border, borderRadius: 4, padding: "1px 5px", fontFamily: "monospace" }}>{di.diskType}</span>
+              <span style={{ fontSize: 9, color: C.muted, background: C.border, borderRadius: 4, padding: "1px 5px", fontFamily: "monospace" }}>{di.fileSystem}</span>
             </div>
-            <span style={{ fontSize: 10, color: C.disk, fontFamily: "monospace" }}>{d.diskUsedMemory.toFixed(1)} / {d.diskTotalMemory.toFixed(1)} GB</span>
+            <span style={{ fontSize: 10, color: C.disk, fontFamily: "monospace" }}>{d.diskUsedMemory.toFixed(1)} / {tm.toFixed(1)} GB</span>
           </div>
           <div style={{ background: C.border, borderRadius: 5, height: 8, overflow: "hidden" }}>
             <div style={{
@@ -27,14 +30,14 @@ export function DiskCard({ d }:{d:DiskData}) {
         </div>
       </div>
       {/*TODO HISTORY */}
-      {<Sparkline data={[1,2,3,44,5,6,7,8]} color={C.disk} height={36} uid="dskh" />}
+      {<Sparkline data={[32,43,65,43,87,99,12,0,32,54]} color={C.disk} height={36} uid="dskh" />}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2px 8px", marginTop: 7 }}>
         <HBar pct={(d.diskRead  / 500) * 100} color={C.disk}  label="Read"  value={`${Math.round(d.diskRead)} MB/s`} />
         <HBar pct={(d.diskWrite / 500) * 100} color={C.temp}  label="Write" value={`${Math.round(d.diskWrite)} MB/s`} />
       </div>
       <StatRow items={[
-        { label: "ACTIVITY", value: `${Math.round(d.diskUse)}%`, color: C.disk },
-        { label: "FILE SYSTEM", value: d.fileSystem, color: C.muted },
+        { label: "ACTIVITY", value: `${d.diskUse.toFixed(1)}%`, color: C.disk },
+        { label: "FILE SYSTEM", value: di.fileSystem, color: C.muted },
       ]} />
     </Card>
   );

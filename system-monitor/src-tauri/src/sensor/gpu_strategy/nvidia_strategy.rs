@@ -25,7 +25,7 @@ impl NvidiaStrategy {
                 gpu_usage: 0.0, gpu_temp: 0.0, vram_used: 0, power_draw_w: 0.0, fan_speed_pct: 0,
             },
             gpu_max_temp: 0.0,
-        }
+        }   
     }
 }
 
@@ -38,7 +38,7 @@ impl GpuStrategy for NvidiaStrategy {
             identity: GpuIdentity {
                 gpu_model: self.model.clone(),
                 gpu_driver: self.driver.clone(),
-                gpu_active: usage.gpu > 1 || mem_info.used > 350 * 1024 * 1024,
+                gpu_active: usage.gpu > 0 || mem_info.used > 800 * 1024 * 1024,
                 vram_total: mem_info.total,
             },
             metrics: GpuMetrics {
