@@ -7,6 +7,7 @@ pub mod net_sensor;
 pub mod uptime_sensor;
 pub mod ping_sensor;
 pub mod hardware_orchestrator;
+pub mod process;
 pub mod gpu_strategy;
 
 pub mod sys_info_sensor;

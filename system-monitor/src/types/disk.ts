@@ -3,4 +3,5 @@ export interface DiskData{
     diskWrite : number,
     diskUsedMemory : number,
     diskUse : number
+    diskUseHistory : number[],
 }

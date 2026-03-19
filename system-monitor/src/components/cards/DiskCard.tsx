@@ -30,7 +30,7 @@ export function DiskCard({ d }:{d:DiskData}) {
         </div>
       </div>
       {/*TODO HISTORY */}
-      {<Sparkline data={[32,43,65,43,87,99,12,0,32,54]} color={C.disk} height={36} uid="dskh" />}
+      {<Sparkline data={d.diskUseHistory} color={C.disk} height={36} uid="dskh" />}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2px 8px", marginTop: 7 }}>
         <HBar pct={(d.diskRead  / 500) * 100} color={C.disk}  label="Read"  value={`${Math.round(d.diskRead)} MB/s`} />
         <HBar pct={(d.diskWrite / 500) * 100} color={C.temp}  label="Write" value={`${Math.round(d.diskWrite)} MB/s`} />

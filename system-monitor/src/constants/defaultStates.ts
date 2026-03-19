@@ -36,6 +36,7 @@ export const INITIAL_DISK_STATE: DiskData = {
     diskWrite: 0,
     diskUsedMemory: 0,
     diskUse: 0,
+    diskUseHistory: Array(40).fill(0),
 };
 
 export const INITIAL_NETWORK_STATE: NetworkData = {

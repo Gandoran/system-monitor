@@ -16,3 +16,8 @@ export interface RustPayload {
         net_ping:number, net_interface:string, net_ip:string};
     uptime_stats: {uptime:number};
 }
+
+export interface RustPayloadProcess{
+    proccess_stats: {pid: number, name:string, cpu_usage:number, ram_usage_bytes:number,
+        disk_read_bytes:number, disk_write_bytes:number}
+}
