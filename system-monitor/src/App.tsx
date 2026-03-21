@@ -4,17 +4,22 @@ import { C } from "./components/ui/SharedUi";
 import { Header } from "./components/layout/Header";
 
 import { OverviewTab } from "./components/tab/OverviewTab";
-import { ProcessesTab } from "./components/tab/processTab";
+import { ProcessesTab } from "./components/tab/ProcessTab";
+import { SpecsTab } from "./components/tab/SpecsTab";
+import { SessionTab } from "./components/tab/SessionTab";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("Overview");
-
   const handleTabChange = async (newTab: string) => {
     setActiveTab(newTab);
     if (newTab === "Processes") {
         await invoke("set_app_mode", { mode: "processes" });
-    } else {
+    }else if(newTab === "Overview"){
         await invoke("set_app_mode", { mode: "hardware" });
+    }else if(newTab === "Info"){
+        await invoke("set_app_mode", { mode: "info" });
+    }else{
+        await invoke("set_app_mode", { mode: "session" });
     }
   };
 
@@ -35,7 +40,8 @@ export default function App() {
       <Header activeTab={activeTab} onTabChange={handleTabChange} />
       {activeTab === "Overview" && <OverviewTab />}
       {activeTab === "Processes" && <ProcessesTab />}
-
+      {activeTab === "Info" && <SpecsTab/>}
+      {activeTab === "Session" && <SessionTab/>}
     </div>
   );
 }

@@ -14,7 +14,7 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
                 <div style={{ fontSize: 17, fontWeight: 800, color: C.text }}>SYSTEM-MONITOR</div>
             </div>
             <div style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
-                {["Overview", "Processes", "History"].map((tabName) => {
+                {["Overview", "Processes", "Info","Session"].map((tabName) => {
                     const isActive = tabName === activeTab;
                     return (
                         <button key={tabName} onClick={() => onTabChange(tabName)} style={{ /* ... */ }}>
