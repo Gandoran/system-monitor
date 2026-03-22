@@ -6,6 +6,7 @@ export const INITIAL_CPU_STATE: CpuData = {
     cpuMaxTemp: 0,
     cpuUse: 0,
     cpuFrequency: 0,
+    cpuHistory: Array(40).fill(0),
 };
 
 export const INITIAL_RAM_STATE: RamData = {
@@ -29,6 +30,9 @@ export const INITIAL_GPU_STATE: GpuData = {
     power: 0,
     fanSpeed: 0,
     driver: '',
+    powerMax: 0,
+    gpuMhz: 0,
+    gpuMaxMhz: 0
 };
 
 export const INITIAL_DISK_STATE: DiskData = {

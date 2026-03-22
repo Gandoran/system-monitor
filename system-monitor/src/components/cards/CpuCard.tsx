@@ -1,4 +1,4 @@
-import { C, Donut, HBar, TempBadge, Card, Title, StatRow } from "../ui/SharedUi";
+import { C, Donut, HBar, TempBadge, Card, Title, StatRow, Sparkline } from "../ui/SharedUi";
 import { CpuData } from "../../types";
 import { useStaticCpuInfo } from "../../hooks/static/useStaticCpuInfo";
 
@@ -26,6 +26,9 @@ export function CpuCard({ c }: { c: CpuData }) {
             ))}
           </div>
         </div>
+      </div>
+      <div>
+      <Sparkline data={c.cpuHistory} color={C.cpu} height={42} uid="cpuh" />
       </div>
       <StatRow items={[
         { label: "MODEL", value: cu.cpuName, color: C.text },

@@ -6,6 +6,8 @@ pub struct GpuIdentity {
     pub gpu_driver: String,
     pub gpu_active: bool,
     pub vram_total: u64,
+    pub power_max_w: f32,
+    pub max_mhz: u32,
 }
 
 #[derive(serde::Serialize, Clone)]
@@ -15,6 +17,7 @@ pub struct GpuMetrics {
     pub vram_used: u64,
     pub power_draw_w: f32,
     pub fan_speed_pct: u32,
+    pub gpu_mhz: u32,
 }
 
 #[derive(serde::Serialize, Clone)]
@@ -56,10 +59,10 @@ fn empty_stats(&self) -> GpuStats {
         GpuStats {
             identity: GpuIdentity {
                 gpu_model: "No Active GPU".to_string(),gpu_driver:"No Driver found".to_string(),
-                gpu_active: false, vram_total: 0,
+                gpu_active: false, vram_total: 0, power_max_w:0.0, max_mhz:0,
             },
             metrics: GpuMetrics {
-                gpu_usage: 0.0, gpu_temp: 0.0, vram_used: 0, power_draw_w: 0.0, fan_speed_pct: 0,
+                gpu_usage: 0.0, gpu_temp: 0.0, vram_used: 0, power_draw_w: 0.0, fan_speed_pct: 0, gpu_mhz:0,
             },
             gpu_max_temp: 0.0,
         }

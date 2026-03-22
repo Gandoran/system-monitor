@@ -1,5 +1,5 @@
 use nvml_wrapper::Nvml;
-use nvml_wrapper::enum_wrappers::device::TemperatureSensor;
+use nvml_wrapper::enum_wrappers::device::{TemperatureSensor,Clock};
 use crate::sensor::gpu_sensor::{GpuStrategy,GpuStats,GpuMetrics,GpuIdentity};
 
 pub struct NvidiaStrategy {
@@ -19,10 +19,11 @@ impl NvidiaStrategy {
         GpuStats {     
             identity: GpuIdentity {
                 gpu_model: self.model.clone(), gpu_driver: self.driver.clone(),
-                gpu_active: false, vram_total: 0,
+                gpu_active: false, vram_total: 0, power_max_w: 0.0, max_mhz: 0,
             },
             metrics: GpuMetrics {
-                gpu_usage: 0.0, gpu_temp: 0.0, vram_used: 0, power_draw_w: 0.0, fan_speed_pct: 0,
+                gpu_usage: 0.0, gpu_temp: 0.0, vram_used: 0, power_draw_w: 0.0, 
+                fan_speed_pct: 0, gpu_mhz: 0,
             },
             gpu_max_temp: 0.0,
         }   
@@ -40,6 +41,8 @@ impl GpuStrategy for NvidiaStrategy {
                 gpu_driver: self.driver.clone(),
                 gpu_active: usage.gpu > 0 || mem_info.used > 800 * 1024 * 1024,
                 vram_total: mem_info.total,
+                power_max_w: device.power_management_limit().unwrap_or(0) as f32 / 1000.0,
+                max_mhz: device.max_clock_info(Clock::Graphics).unwrap_or(0),
             },
             metrics: GpuMetrics {
                 gpu_usage: usage.gpu as f32,
@@ -47,6 +50,7 @@ impl GpuStrategy for NvidiaStrategy {
                 vram_used: mem_info.used,
                 power_draw_w: device.power_usage().unwrap_or(0) as f32 / 1000.0,
                 fan_speed_pct: device.fan_speed(0).unwrap_or(0),
+                gpu_mhz: device.clock_info(Clock::Graphics).unwrap_or(0),
             },
             gpu_max_temp: 0.0,
         }

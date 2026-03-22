@@ -26,6 +26,7 @@ export function updateCpuData(prev: CpuData,rustData:RustPayload):CpuData{
         cpuMaxTemp : rustData.cpu_temp.max_temp,
         cpuCoresLoad: rustData.cpu_stats.cores_load,
         cpuFrequency: Number(rustData.cpu_stats.frequency.toFixed(2)),
+        cpuHistory: [...prev.cpuHistory.slice(1), rustData.cpu_stats.cpu_usage],
     };
 } 
 
@@ -42,6 +43,9 @@ export function updateGpuData(prev: GpuData,rustData:RustPayload):GpuData{
         gpuHistory: [...prev.gpuHistory.slice(1), rustData.gpu_stats.gpu_usage],
         power: rustData.gpu_stats.power_draw_w,
         fanSpeed: rustData.gpu_stats.fan_speed_pct,
+        powerMax: rustData.gpu_stats.power_max_w,
+        gpuMhz: rustData.gpu_stats.gpu_mhz,
+        gpuMaxMhz: rustData.gpu_stats.max_mhz,
     };
 }
 

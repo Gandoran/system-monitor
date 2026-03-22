@@ -4,4 +4,5 @@ export interface CpuData{
     cpuMaxTemp : number,
     cpuUse : number,
     cpuFrequency : number,
+    cpuHistory: number[],
 }

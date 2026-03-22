@@ -17,6 +17,14 @@ pub struct SystemStats {
     pub uptime_stats : UptimeStats,
 }
 
+#[derive(serde::Serialize, Clone)]
+pub struct SessionHardwareStats {
+    pub gpu_stats: GpuStats,
+    pub cpu_stats: CpuStats,
+    pub cpu_temp: TempStats,
+    pub ram_stats: RamMetrics,
+}
+
 pub struct HardwareOrchestrator{
     cpu_sensor : CpuSensor,
     cpu_temp_sensor : TempSensor,
@@ -49,6 +57,15 @@ impl HardwareOrchestrator{
             disk_stats : self.disk_sensor.read(),
             net_stats : self.net_sensor.read(),
             uptime_stats : self.uptime_sensor.read(),
+        }
+    }
+
+    pub fn read_session_only(&mut self) -> SessionHardwareStats {
+        SessionHardwareStats {
+            gpu_stats: self.gpu_sensor.read(),
+            cpu_stats: self.cpu_sensor.read(),
+            cpu_temp: self.cpu_temp_sensor.read(),
+            ram_stats: self.ram_sensor.read(),
         }
     }
 }

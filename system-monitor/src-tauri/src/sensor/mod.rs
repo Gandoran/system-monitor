@@ -17,3 +17,4 @@ pub mod ping_sensor;
 pub mod hardware_orchestrator;
 pub mod sys_info_sensor;
 pub mod net_identity;
+pub mod session_tracker;

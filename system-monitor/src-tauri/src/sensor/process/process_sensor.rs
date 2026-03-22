@@ -1,5 +1,5 @@
 use sysinfo::{System, ProcessesToUpdate};
-use crate::sensor::process::sorter::{SortCriteria,ProcessSorter};
+use crate::sensor::process::sorter::ProcessSorter;
 use serde::Serialize;
 
 #[derive(Serialize, Clone)]
@@ -21,12 +21,14 @@ impl ProcessSensor {
     pub fn new() -> Self {
         let mut sys = System::new();
         sys.refresh_processes(ProcessesToUpdate::All, true);
+        sys.refresh_memory();
         Self { sys }
     }
 
-    pub fn read_top_processes(&mut self, limit: usize, criteria: SortCriteria) -> Vec<ProcessMetrics> {
+    pub fn read_top_processes(&mut self, limit: usize) -> Vec<ProcessMetrics> {
         self.sys.refresh_processes(ProcessesToUpdate::All, true);
         let mut metrics_list = Vec::with_capacity(self.sys.processes().len());
+        let total_ram = self.sys.total_memory(); //violazione single responsability      
         for (pid, process) in self.sys.processes() {
             let disk_usage = process.disk_usage();
             metrics_list.push(ProcessMetrics {
@@ -34,10 +36,10 @@ impl ProcessSensor {
                 name: process.name().to_string_lossy().into_owned(),
                 cpu_usage: process.cpu_usage(),
                 ram_usage: process.memory(),
-                disk_read: disk_usage.total_read_bytes,
-                disk_write: disk_usage.total_written_bytes,
+                disk_read: disk_usage.read_bytes,
+                disk_write: disk_usage.written_bytes,
             });
         }
-        ProcessSorter::get_top_n(metrics_list, limit, &criteria)
+        ProcessSorter::get_top_n(metrics_list, limit, total_ram)    
     }
 }

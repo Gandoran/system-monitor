@@ -10,7 +10,8 @@ export interface RustPayload {
     cpu_temp: { cpu_temp: number, max_temp:number };
     ram_stats: { ram_used: number, ram_available: number, swap_used: number, swap_total: number, };
     gpu_stats: { gpu_usage: number, gpu_temp: number, gpu_max_temp:number, vram_used: number, vram_total: number,
-        gpu_model: string, gpu_driver:string, fan_speed_pct: number, power_draw_w:number};
+        gpu_model: string, gpu_driver:string, fan_speed_pct: number, power_draw_w:number,
+        power_max_w:number,max_mhz:number,gpu_mhz:number};
     disk_stats: {disk_write:number,disk_read:number,disk_used_memory:number,disk_use:number};
     net_stats: {net_history_download:number[],net_history_upload:number[],tot_download:number,tot_upload:number,
         net_ping:number, net_interface:string, net_ip:string};

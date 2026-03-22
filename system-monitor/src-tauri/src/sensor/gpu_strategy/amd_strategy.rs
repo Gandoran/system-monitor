@@ -21,6 +21,8 @@ impl GpuStrategy for AmdStrategy {
                 gpu_driver : "666.xxx".to_string(),
                 gpu_active: true, // Sempre VERO sui laptop!
                 vram_total: 8192 * 1024 * 1024, // 8 GB condivisi
+                power_max_w: 150.0,
+                max_mhz: 1500,
             },
             metrics: GpuMetrics {
                 gpu_usage: 12.0, // 12% di utilizzo finto
@@ -28,6 +30,7 @@ impl GpuStrategy for AmdStrategy {
                 vram_used: 512 * 1024 * 1024, // 512 MB di RAM di sistema condivisa
                 power_draw_w: 15.0, // Consuma pochissimo (15W)
                 fan_speed_pct: 0,   // Niente ventola dedicata
+                gpu_mhz: 1250,
             },
             gpu_max_temp: 0.0,
         }

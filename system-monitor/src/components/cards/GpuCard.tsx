@@ -3,9 +3,8 @@ import { GpuData } from "../../types";
 
 export function GpuCard({g}:{g:GpuData}){
   const vramPct  = (g.vramUsed / (g.vramTotal || 1)) * 100;
-  //TODO calcolo power limit
-  const powerLimit = 150; 
-  const powerPct = (g.power / powerLimit) * 100;
+  const powerPct = (g.power / g.powerMax) * 100;
+  const mhzPct = (g.gpuMhz/g.gpuMaxMhz)*100;
   const HeaderBadges = (
     <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
        <TempBadge val={g.gpuMaxTemp} baseColor={C.gpu} label="MAX" />
@@ -25,7 +24,8 @@ export function GpuCard({g}:{g:GpuData}){
           <div style={{ marginTop: 7 }}>
             <HBar pct={g.gpuLoad} color={C.gpu} label="GPU Load" value={`${Math.round(g.gpuLoad)}%`} />
             <HBar pct={vramPct} color={C.net} label="VRAM" value={`${g.vramUsed.toFixed(2)} / ${g.vramTotal} GB`} />
-            <HBar pct={powerPct} color={C.temp} label="Power" value={`${Math.round(g.power)}W`} />
+            <HBar pct={powerPct} color={C.temp} label="Power" value={`${Math.round(g.power)} / ${g.powerMax} W`} />
+            <HBar pct={mhzPct} color={C.disk} label="Mhz" value={`${Math.round(g.gpuMhz)} / ${g.gpuMaxMhz} Mhz`} />
             <HBar pct={g.fanSpeed} color={C.fan} label="Fan" value={`${Math.round(g.fanSpeed)}%`} />
           </div>
         </div>
