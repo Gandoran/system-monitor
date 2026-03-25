@@ -7,10 +7,13 @@ pub struct SessionTracker {
     pub cpu_max_temp: f32,
     pub cpu_sum_temp: f32,
     pub cpu_sum_load: f32,
+    pub cpu_max_load: f32,
     pub gpu_max_temp: f32,
     pub gpu_sum_temp: f32,
     pub gpu_sum_load: f32,
+    pub gpu_max_load: f32,
     pub ram_sum_load: f32,
+    pub ram_max_load: f32,
 }
 
 impl SessionTracker {
@@ -18,8 +21,9 @@ impl SessionTracker {
         Self {
             is_running: false, target_process: None, ticks: 0, 
             cpu_max_temp: 0.0, cpu_sum_temp: 0.0, cpu_sum_load: 0.0, 
-            gpu_max_temp: 0.0, gpu_sum_temp: 0.0, gpu_sum_load: 0.0, 
-            ram_sum_load: 0.0,
+            cpu_max_load: 0.0, gpu_max_temp: 0.0, gpu_sum_temp: 0.0, 
+            gpu_max_load: 0.0, gpu_sum_load: 0.0, 
+            ram_sum_load: 0.0, ram_max_load: 0.0,
         }
     }
 
@@ -35,6 +39,9 @@ impl SessionTracker {
         self.ticks += 1;
         if cpu_temp > self.cpu_max_temp { self.cpu_max_temp = cpu_temp; }
         if gpu_temp > self.gpu_max_temp { self.gpu_max_temp = gpu_temp; }
+        if gpu_load > self.gpu_max_load { self.gpu_max_load = gpu_load; }
+        if cpu_load > self.cpu_max_load { self.cpu_max_load = cpu_load; }
+        if ram_load > self.ram_max_load { self.ram_max_load = ram_load; }
         
         self.cpu_sum_temp += cpu_temp;
         self.cpu_sum_load += cpu_load;
@@ -52,10 +59,13 @@ impl SessionTracker {
             duration_seconds: self.ticks,
             cpu_max_temp: self.cpu_max_temp,
             cpu_avg_temp: self.cpu_sum_temp / divider,
+            cpu_max_load: self.cpu_max_load,
             cpu_avg_load: self.cpu_sum_load / divider,
             gpu_max_temp: self.gpu_max_temp,
             gpu_avg_temp: self.gpu_sum_temp / divider,
+            gpu_max_load: self.gpu_max_load,
             gpu_avg_load: self.gpu_sum_load / divider,
+            ram_max_load: self.ram_max_load,
             ram_avg_load: self.ram_sum_load / divider,
         }
     }
