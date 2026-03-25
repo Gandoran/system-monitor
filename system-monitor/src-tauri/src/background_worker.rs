@@ -7,13 +7,14 @@ use crate::app_mode::AppMode;
 use crate::sensor::gpu_sensor::GpuIdentity;
 use crate::sensor::hardware_orchestrator::HardwareOrchestrator;
 use crate::sensor::process::process_sensor::ProcessSensor;
-use crate::sensor::session_tracker::SessionTracker;
+use crate::sensor::session::tracker::SessionTracker;
 
 pub fn spawn_monitoring_thread(
     app_handle: AppHandle,
     mode_state: Arc<Mutex<AppMode>>,
     gpu_identity_state: Arc<Mutex<GpuIdentity>>,
     session_tracker_state: Arc<Mutex<SessionTracker>>,
+    ram_total: f32,
 ) {
     thread::spawn(move || {
         let mut orchestrator = HardwareOrchestrator::new();
@@ -35,12 +36,13 @@ pub fn spawn_monitoring_thread(
                     let _ = app_handle.emit("system-stats", &stats);     
                     if is_session_running {
                         let mut tracker = session_tracker_state.lock().unwrap();
+                        let ram_load_percent = (stats.ram_stats.ram_used as f32 / ram_total) * 100.0;
                         tracker.update(
                             stats.cpu_temp.cpu_temp, 
                             stats.cpu_stats.cpu_usage,
                             stats.gpu_stats.gpu_temp, 
                             stats.gpu_stats.gpu_usage, 
-                            stats.ram_stats.ram_used as f32
+                            ram_load_percent
                         );
                     }
                 }
@@ -48,12 +50,12 @@ pub fn spawn_monitoring_thread(
                     let top_processes = process.read_top_processes(20);
                     let _ = app_handle.emit("process-stats", &top_processes);
                     if is_session_running {
-                        update_session_light(&mut orchestrator, &session_tracker_state);
+                        update_session_light(&mut orchestrator, &session_tracker_state, ram_total);
                     }
                 }
                 AppMode::Info | AppMode::Session => {
                     if is_session_running {
-                        update_session_light(&mut orchestrator, &session_tracker_state);
+                        update_session_light(&mut orchestrator, &session_tracker_state, ram_total);
                     }
                 }
             }
@@ -64,15 +66,17 @@ pub fn spawn_monitoring_thread(
 
 fn update_session_light(
     orchestrator: &mut HardwareOrchestrator, 
-    session_tracker_state: &Arc<Mutex<SessionTracker>>
+    session_tracker_state: &Arc<Mutex<SessionTracker>>,
+    ram_total: f32
 ) {
     let light_stats = orchestrator.read_session_only();
     let mut tracker = session_tracker_state.lock().unwrap();
+    let ram_load_percent = (light_stats.ram_stats.ram_used as f32 / ram_total) * 100.0;
     tracker.update(
         light_stats.cpu_temp.cpu_temp, 
         light_stats.cpu_stats.cpu_usage,
         light_stats.gpu_stats.gpu_temp, 
         light_stats.gpu_stats.gpu_usage, 
-        light_stats.ram_stats.ram_used as f32
+        ram_load_percent
     );
 }

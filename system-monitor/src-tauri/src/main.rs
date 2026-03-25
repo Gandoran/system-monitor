@@ -11,11 +11,11 @@ mod background_worker;
 
 use app_mode::AppMode;
 use crate::sensor::gpu_sensor::GpuIdentity;
-use crate::sensor::session_tracker::SessionTracker;
+use crate::sensor::session::tracker::SessionTracker;
+use crate::sensor::ram_sensor::RamSensor;
 
 fn main() {
     let app_mode = Arc::new(Mutex::new(AppMode::Hardware));
-    //TODO SPOSTARE???
     let current_gpu_identity = Arc::new(Mutex::new(GpuIdentity {
         gpu_model: "Caricamento...".to_string(),
         gpu_driver: "...".to_string(),
@@ -28,6 +28,7 @@ fn main() {
     let mode_for_thread = app_mode.clone();
     let gpu_for_thread = current_gpu_identity.clone();
     let tracker_for_thread = session_tracker.clone();
+    let ram_total = RamSensor::get_static_info().ram_total as f32;
 
     tauri::Builder::default()
         .manage(app_mode) 
@@ -40,16 +41,18 @@ fn main() {
             command::cpu_command::get_static_cpu_info,
             command::disk_command::get_static_disk_info,
             command::gpu_command::get_static_gpu_info,
+            command::session_command::get_session_history,
             command::session_command::start_session,
             command::session_command::stop_session,
             app_mode::set_app_mode,
         ])
-        .setup(|app| {
+        .setup(move |app| {
             background_worker::spawn_monitoring_thread(
                 app.handle().clone(),
                 mode_for_thread,
                 gpu_for_thread,
-                tracker_for_thread
+                tracker_for_thread,
+                ram_total
             );
             Ok(()) 
         })

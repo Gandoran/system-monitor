@@ -217,6 +217,33 @@ export function UnitTitle({ label }: { label: string }){
   )
 }
 
+// ── Result Pill ──────────────────────────────────────────────────────────────────
+export function ResultPill({ icon, label, avg, peak, color }: any) {
+  return (
+    <div style={{ 
+      background: `${color}15`, border: `1px solid ${color}40`, borderRadius: 8, 
+      padding: "10px 12px", display: "flex", flexDirection: "column", gap: 8, flex: 1, minWidth: 120
+    }}>
+      <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1 }}>
+        {icon} {label}
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <span style={{ fontSize: 10, color: C.muted }}>Avg:</span>
+          <strong style={{ fontSize: 15, color: C.text }}>{avg}</strong>
+        </div>
+        {peak && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 2, textAlign: "left" }}>
+            <span style={{ fontSize: 10, color: color, opacity: 0.8 }}>Max:</span>
+            <strong style={{ fontSize: 13, color: color }}>{peak}</strong>
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+}
+
 // ── Logo ──────────────────────────────────────────────────────────────────
 export const SysmonLogo = () => (
   <div style={{ width: 33, height: 33, borderRadius: 9, 
@@ -247,3 +274,4 @@ export const TabButton = ({ label, isActive, onClick }: TabButtonProps) => (
     {label}
   </button>
 );
+// ──────────────────────────────────────────────────────────────────────────────

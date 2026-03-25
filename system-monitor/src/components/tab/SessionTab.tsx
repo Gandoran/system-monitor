@@ -1,88 +1,57 @@
-import { useState } from "react";
-import { invoke } from "@tauri-apps/api/core";
+// File: src/views/SessionTab.tsx
 import { SessionResults } from "../../types/session";
+import { SessionCard } from "../cards/SessionCard";
+import { C, Card } from "../ui/SharedUi";
 
-export function SessionTab() {
-  const [isRunning, setIsRunning] = useState(false);
-  const [results, setResults] = useState<SessionResults | null>(null);
+interface SessionTabProps {
+  isRunning: boolean;
+  history: SessionResults[];
+  startSession: () => void;
+  stopSession: () => void;
+}
 
-  // Azione del bottone START
-  const handleStart = async () => {
-    try {
-      await invoke("start_session");
-      setIsRunning(true);
-      setResults(null); // Puliamo i risultati della sessione precedente
-    } catch (e) {
-      console.error("Errore avvio sessione:", e);
-    }
-  };
-
-  // Azione del bottone STOP
-  const handleStop = async () => {
-    try {
-      const data = await invoke<SessionResults>("stop_session");
-      setIsRunning(false);
-      setResults(data); // Salviamo i calcoli di Rust nello stato
-    } catch (e) {
-      console.error("Errore stop sessione:", e);
-    }
-  };
-
+export function SessionTab({ isRunning, history, startSession, stopSession }: SessionTabProps) {
   return (
-    <div style={{ padding: "20px", color: "white", fontFamily: "monospace" }}>
-      <h2 style={{ color: "#00ffcc" }}>⚡ Benchmark Session</h2>
-      
-      {/* BOTTONE START / STOP */}
-      <div style={{ marginBottom: "20px" }}>
+    <div style={{ padding: "10px", fontFamily: "monospace" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+        <div>
+          <h2 style={{ color: C.text, margin: 0, letterSpacing: 1 }}>⚡ BENCHMARK</h2>
+          <span style={{ fontSize: 11, color: C.muted }}>Registra le prestazioni di picco in background</span>
+        </div>
         {!isRunning ? (
           <button 
-            onClick={handleStart}
-            style={{ padding: "10px 20px", background: "green", color: "white", border: "none", cursor: "pointer", fontWeight: "bold" }}
-          >
-            ▶ START SESSION
+            onClick={startSession}
+            style={{ 
+              padding: "8px 20px", background: `${C.ram}22`, color: C.ram, border: `1px solid ${C.ram}55`, 
+              borderRadius: 8, cursor: "pointer", fontWeight: "bold", transition: "all 0.2s" 
+            }}>▶ START RECORDING
           </button>
         ) : (
           <button 
-            onClick={handleStop}
-            style={{ padding: "10px 20px", background: "red", color: "white", border: "none", cursor: "pointer", fontWeight: "bold", animation: "pulse 1s infinite" }}
-          >
-            ⏹ STOP RECORDING
+            onClick={stopSession}
+            style={{ 
+              padding: "8px 20px", background: "#ff444422", color: "#ff4444", border: "1px solid #ff444455", 
+              borderRadius: 8, cursor: "pointer", fontWeight: "bold", animation: "pulse 2s infinite" 
+            }}
+          >⏹ STOP & SAVE
           </button>
         )}
       </div>
-
-      {/* STATO IN CORSO */}
       {isRunning && (
-        <div style={{ color: "orange" }}>
-          <p>Registrazione in background attiva...</p>
-          <p style={{ fontSize: "12px", color: "gray" }}>Prova a cambiare Tab e poi torna qui per fermarla!</p>
-        </div>
+        <Card accent={C.ram} style={{ padding: 12, marginBottom: 24 }}>
+          <span style={{ color: C.text, fontSize: 13 }}>🔴 Registrazione in corso...</span>
+        </Card>
       )}
-
-      {/* VISUALIZZAZIONE RISULTATI GREZZI */}
-      {results && !isRunning && (
-        <div style={{ background: "#1e1e1e", padding: "15px", borderRadius: "8px", border: "1px solid #333" }}>
-          <h3 style={{ color: "violet", marginTop: 0 }}>📊 Risultati Finali</h3>
-          
-          <p><strong>Durata Sessione:</strong> {results.durationSeconds} secondi</p>
-          
-          <hr style={{ borderColor: "#333" }} />
-          
-          <p><strong>CPU Load Medio:</strong> {results.cpuAvgLoad.toFixed(2)} %</p>
-          <p><strong>CPU Temp Media:</strong> {results.cpuAvgTemp.toFixed(1)} °C</p>
-          <p><strong>CPU Picco Temp:</strong> <span style={{ color: "red" }}>{results.cpuMaxTemp.toFixed(1)} °C</span></p>
-          
-          <hr style={{ borderColor: "#333" }} />
-          
-          <p><strong>GPU Load Medio:</strong> {results.gpuAvgLoad.toFixed(2)} %</p>
-          <p><strong>GPU Temp Media:</strong> {results.gpuAvgTemp.toFixed(1)} °C</p>
-          <p><strong>GPU Picco Temp:</strong> <span style={{ color: "red" }}>{results.gpuMaxTemp.toFixed(1)} °C</span></p>
-          
-          <hr style={{ borderColor: "#333" }} />
-          
-          <p><strong>RAM Load Medio:</strong> {results.ramAvgLoad.toFixed(2)} %</p>
-        </div>
-      )}
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        {history.length === 0 && !isRunning && (
+          <div style={{ textAlign: "center", color: C.muted, padding: 40, border: `1px dashed ${C.border}`, borderRadius: 12 }}>
+            Nessun benchmark registrato. Premi Start per iniziare!
+          </div>
+        )}
+        {history.map((session, i) => (
+          <SessionCard key={i} s={session} i={i} />
+        ))}
+      </div>
     </div>
   );
 }

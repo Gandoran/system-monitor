@@ -5,6 +5,7 @@
 pub mod gpu_strategy;
 pub mod sys_complete_info;
 pub mod process;
+pub mod session;
 //export
 pub mod cpu_sensor;
 pub mod disk_sensor;
@@ -17,4 +18,3 @@ pub mod ping_sensor;
 pub mod hardware_orchestrator;
 pub mod sys_info_sensor;
 pub mod net_identity;
-pub mod session_tracker;

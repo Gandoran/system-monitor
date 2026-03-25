@@ -7,9 +7,11 @@ import { OverviewTab } from "./components/tab/OverviewTab";
 import { ProcessesTab } from "./components/tab/ProcessTab";
 import { SpecsTab } from "./components/tab/SpecsTab";
 import { SessionTab } from "./components/tab/SessionTab";
+import { useSessionMonitor } from "./hooks/useSessionMonitor";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("Overview");
+  const sessionData = useSessionMonitor();
   const handleTabChange = async (newTab: string) => {
     setActiveTab(newTab);
     if (newTab === "Processes") {
@@ -45,7 +47,7 @@ export default function App() {
       {activeTab === "Overview" && <OverviewTab />}
       {activeTab === "Processes" && <ProcessesTab />}
       {activeTab === "Info" && <SpecsTab/>}
-      {activeTab === "Session" && <SessionTab/>}
+      {activeTab === "Session" && (<SessionTab {...sessionData} />)}
     </div>
   );
 }
