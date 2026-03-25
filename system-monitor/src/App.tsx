@@ -30,6 +30,10 @@ export default function App() {
   return (
     <div style={{minHeight: "100vh",background: C.bg, color: C.text, fontFamily: "monospace", padding: "20px 24px", boxSizing: "border-box"}}>
       <style>{`
+        html, body, #root {
+            margin: 0;
+            padding: 0;
+            background-color
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
         * { box-sizing: border-box; }
         ::-webkit-scrollbar { width: 6px; }

@@ -41,16 +41,18 @@ export function Sparkline({ data, color, height = 48 }:any) {
 
 // ── donut chart ───────────────────────────────────────────────────────────────
 export function Donut({ pct, color, size = 88, label, sub }:any) {
+  const clampedPct = Math.min(Math.max(pct, 0), 100);
   const r = 36, cx = 44, cy = 44, circ = 2 * Math.PI * r;
-  const dash = (pct / 100) * circ;
+  const offset = circ - (clampedPct / 100) * circ;
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
       <svg width={size} height={size} viewBox="0 0 88 88">
         <circle cx={cx} cy={cy} r={r} fill="none" stroke={C.border} strokeWidth="10" />
-        <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth="10"
-          strokeDasharray={`${dash} ${circ}`} strokeDashoffset={circ / 4}
-          strokeLinecap="round"
-          style={{ transition: "stroke-dasharray 0.6s ease" }}
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth="10" strokeLinecap="round"
+          transform={`rotate(-90 ${cx} ${cy})`}
+          strokeDasharray={circ}
+          strokeDashoffset={offset}
+          style={{ transition: "stroke-dashoffset 0.6s ease" }}
         />
         <text x={cx} y={cy - 4} textAnchor="middle" fill={C.text} fontSize="14" fontWeight="700" fontFamily="monospace">
           {Math.round(pct)}%
@@ -214,3 +216,34 @@ export function UnitTitle({ label }: { label: string }){
     </div>
   )
 }
+
+// ── Logo ──────────────────────────────────────────────────────────────────
+export const SysmonLogo = () => (
+  <div style={{ width: 33, height: 33, borderRadius: 9, 
+    background: `linear-gradient(135deg, ${C.cpu}, ${C.ram})`, 
+    display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, 
+    boxShadow: `0 0 18px ${C.cpu}55` 
+  }}>
+    📊
+  </div>
+);
+
+// ── Tab Buttom ──────────────────────────────────────────────────────────────────
+interface TabButtonProps {
+  label: string;
+  isActive: boolean;
+  onClick: () => void;
+}
+
+export const TabButton = ({ label, isActive, onClick }: TabButtonProps) => (
+  <button 
+    onClick={onClick} 
+    style={{
+      background: isActive ? C.surface : "transparent", border: `1px solid ${isActive ? C.border : "transparent"}`,
+      color: isActive ? C.text : C.muted, borderRadius: 7, padding: "4px 12px", fontSize: 12,
+      fontFamily: "monospace", cursor: "pointer", letterSpacing: 0.5, transition: "all 0.2s"
+    }}
+  >
+    {label}
+  </button>
+);

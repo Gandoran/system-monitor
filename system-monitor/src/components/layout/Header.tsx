@@ -1,28 +1,30 @@
-// FILE: Header.tsx
-import { C } from "../ui/SharedUi";
+import { C, SysmonLogo, TabButton } from "../ui/SharedUi";
 
 interface HeaderProps {
     activeTab: string;
     onTabChange: (tab: string) => void;
 }
 
+const TABS = ["Overview", "Processes", "Info", "Session"];
 export function Header({ activeTab, onTabChange }: HeaderProps) {
     return (
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
-            <div style={{ width: 36, height: 36 /* ... */ }}> 📊 </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 13 }}>
+            <SysmonLogo />
             <div>
-                <div style={{ fontSize: 17, fontWeight: 800, color: C.text }}>SYSTEM-MONITOR</div>
+                <div style={{ fontSize: 15, fontWeight: 800, letterSpacing: 2.5, color: C.text }}>SYSMON</div>
+                <div style={{ fontSize: 9, color: C.muted, letterSpacing: 1.5 }}>SYSTEM MONITOR</div>
             </div>
-            <div style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
-                {["Overview", "Processes", "Info","Session"].map((tabName) => {
-                    const isActive = tabName === activeTab;
-                    return (
-                        <button key={tabName} onClick={() => onTabChange(tabName)} style={{ /* ... */ }}>
-                            {tabName}
-                        </button>
-                    );
-                })}
+            <div style={{ marginLeft: "auto", display: "flex", gap: 4 }}>
+                {TABS.map((tabName) => (
+                    <TabButton 
+                        key={tabName}
+                        label={tabName}
+                        isActive={activeTab === tabName}
+                        onClick={() => onTabChange(tabName)}
+                    />
+                ))}
             </div>
+            
         </div>
     );
 }

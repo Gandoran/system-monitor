@@ -1,18 +1,6 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
-
-// 1. Definiamo la struttura esatta che ci aspetta da Rust
-export interface SessionResults {
-  processName: string | null;
-  durationSeconds: number;
-  cpuMaxTemp: number;
-  cpuAvgTemp: number;
-  cpuAvgLoad: number;
-  gpuMaxTemp: number;
-  gpuAvgTemp: number;
-  gpuAvgLoad: number;
-  ramAvgLoad: number;
-}
+import { SessionResults } from "../../types/session";
 
 export function SessionTab() {
   const [isRunning, setIsRunning] = useState(false);

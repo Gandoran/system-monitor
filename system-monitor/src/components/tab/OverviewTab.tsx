@@ -12,7 +12,9 @@ export function OverviewTab() {
         <SummaryPills c={cpu} r={ram} g={gpu} n={network} />
       </div>
       
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "auto auto auto", gap: 14 }}>
+      <div style={{ 
+        display: "grid", gridTemplateColumns: "1fr 1fr",gap: 14,alignItems: "start"
+      }}>
           <CpuCard c={cpu}/>
           <GpuCard g={gpu}/>
           <RamCard ra={ram}/>
