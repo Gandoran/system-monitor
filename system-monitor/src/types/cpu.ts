@@ -1,8 +1,8 @@
 export interface CpuData{
-    cpuCoresLoad : number[],
-    cpuTemp : number,
-    cpuMaxTemp : number,
-    cpuUse : number,
-    cpuFrequency : number,
-    cpuHistory: number[],
+    cpuCoresLoad : number[];
+    cpuTemp : number;
+    cpuMaxTemp : number;
+    cpuUse : number;
+    cpuFrequency : number;
+    cpuHistory: number[];
 }

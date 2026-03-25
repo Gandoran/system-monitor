@@ -1,37 +1,35 @@
-use crate::sensor::gpu_sensor::{GpuStrategy,GpuStats};
+use crate::sensor::gpu_sensor::{GpuStrategy, GpuMetrics, GpuIdentity};
 use crate::sensor::gpu_strategy::nvidia_strategy::NvidiaStrategy;
 use crate::sensor::gpu_strategy::intel_strategy::IntelStrategy;
 
 pub struct GpuChain {
     strategies: Vec<Box<dyn GpuStrategy>>,
+    pub active_index: usize,
 }
 
 impl GpuChain {
     pub fn new() -> Self {
         let mut strategies: Vec<Box<dyn GpuStrategy>> = Vec::new();
-
-        // 1. Dedicated gpu
         if let Ok(nv) = NvidiaStrategy::new() {
             strategies.push(Box::new(nv));
         }
-        
-        //Amd strategy for future
-
-        // 2. Integrated gpu
         strategies.push(Box::new(IntelStrategy::new()));
-
-        Self { strategies }
+        Self { strategies, active_index: 0 }
     }
 
-    pub fn execute(&self) -> Option<GpuStats> {
-        for strat in &self.strategies {
+    pub fn execute(&mut self) -> Option<GpuMetrics> {
+        for (i, strat) in self.strategies.iter().enumerate() {
             let stats = strat.read();
-            
-            if stats.identity.gpu_active {
+            if stats.gpu_active || i == self.strategies.len() - 1 {
+                self.active_index = i;
                 return Some(stats);
             }
         }
-        
         None
+    }
+
+    pub fn get_static_gpu_info(&self) -> Option<GpuIdentity> {
+        if self.strategies.is_empty() { return None; }
+        Some(self.strategies[self.active_index].get_static_gpu_info())
     }
 }

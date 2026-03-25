@@ -20,19 +20,15 @@ export const INITIAL_RAM_STATE: RamData = {
 };
 
 export const INITIAL_GPU_STATE: GpuData = {
-    vramTotal: 8,
     vramUsed: 0,
     gpuLoad: 0,
     gpuTemp: 0,
     gpuMaxTemp: 0,
     gpuHistory: Array(40).fill(0),
-    model: '',
     power: 0,
     fanSpeed: 0,
-    driver: '',
-    powerMax: 0,
     gpuMhz: 0,
-    gpuMaxMhz: 0
+    needUpdate: false,
 };
 
 export const INITIAL_DISK_STATE: DiskData = {

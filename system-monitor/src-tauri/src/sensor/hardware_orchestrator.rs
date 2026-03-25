@@ -1,4 +1,4 @@
-use super::gpu_sensor::{GpuSensor, GpuStats};
+use super::gpu_sensor::{GpuSensor, GpuMetrics};
 use super::cpu_sensor::{CpuSensor, CpuStats};
 use super::ram_sensor::{RamSensor, RamMetrics};
 use super::disk_sensor::{DiskSensor, DiskMetrics};
@@ -6,9 +6,11 @@ use super::net_sensor::{NetSensor,NetStats};
 use super::cpu_temp_sensor::{TempSensor, TempStats};
 use super::uptime_sensor::{UptimeSensor, UptimeStats};
 
+use crate::sensor::gpu_sensor::GpuIdentity;
+
 #[derive(serde::Serialize, Clone)]
 pub struct SystemStats {
-    pub gpu_stats: GpuStats,
+    pub gpu_stats: GpuMetrics,
     pub cpu_stats: CpuStats,
     pub cpu_temp: TempStats,
     pub ram_stats: RamMetrics,
@@ -19,7 +21,7 @@ pub struct SystemStats {
 
 #[derive(serde::Serialize, Clone)]
 pub struct SessionHardwareStats {
-    pub gpu_stats: GpuStats,
+    pub gpu_stats: GpuMetrics,
     pub cpu_stats: CpuStats,
     pub cpu_temp: TempStats,
     pub ram_stats: RamMetrics,
@@ -67,5 +69,9 @@ impl HardwareOrchestrator{
             cpu_temp: self.cpu_temp_sensor.read(),
             ram_stats: self.ram_sensor.read(),
         }
+    }
+    
+    pub fn get_current_gpu_identity(&self) -> GpuIdentity {
+        self.gpu_sensor.get_static_gpu_info()
     }
 }

@@ -1,15 +1,11 @@
 export interface GpuData {
-    vramTotal: number,
-    vramUsed: number,
-    gpuLoad: number,  
-    gpuTemp: number,
-    gpuMaxTemp:number,
-    gpuHistory: number[],
-    model: string,
-    driver: string,
-    power: number,
-    fanSpeed: number,
-    powerMax: number,
-    gpuMhz:number,
-    gpuMaxMhz: number,
+    vramUsed: number;
+    gpuLoad: number; 
+    gpuTemp: number;
+    gpuMaxTemp:number;
+    gpuHistory: number[];
+    power: number;
+    fanSpeed: number;
+    gpuMhz:number;
+    needUpdate: boolean;
 }

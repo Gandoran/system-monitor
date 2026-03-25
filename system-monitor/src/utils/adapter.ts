@@ -33,19 +33,15 @@ export function updateCpuData(prev: CpuData,rustData:RustPayload):CpuData{
 export function updateGpuData(prev: GpuData,rustData:RustPayload):GpuData{
     return{
         ...prev,
-        model: rustData.gpu_stats.gpu_model,
-        driver: rustData.gpu_stats.gpu_driver,
         vramUsed: rustData.gpu_stats.vram_used / 1073741824,
-        vramTotal: rustData.gpu_stats.vram_total / 1073741824,
         gpuLoad: rustData.gpu_stats.gpu_usage,
         gpuTemp: rustData.gpu_stats.gpu_temp,
         gpuMaxTemp: rustData.gpu_stats.gpu_max_temp,
         gpuHistory: [...prev.gpuHistory.slice(1), rustData.gpu_stats.gpu_usage],
         power: rustData.gpu_stats.power_draw_w,
         fanSpeed: rustData.gpu_stats.fan_speed_pct,
-        powerMax: rustData.gpu_stats.power_max_w,
         gpuMhz: rustData.gpu_stats.gpu_mhz,
-        gpuMaxMhz: rustData.gpu_stats.max_mhz,
+        needUpdate: rustData.gpu_stats.needs_static_update,
     };
 }
 

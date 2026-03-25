@@ -5,5 +5,6 @@ pub mod system_command;
 pub mod ram_command;
 pub mod cpu_command;
 pub mod disk_command;
+pub mod gpu_command;
 pub mod specs_command;
 pub mod session_command;

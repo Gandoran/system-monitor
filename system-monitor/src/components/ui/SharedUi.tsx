@@ -189,3 +189,28 @@ export function StatRow({ items }: { items: { label: string, value: string | num
     </div>
   );
 }
+
+// ── section title ──────────────────────────────────────────────────────────────────
+export function SectionTitle({ label }: { label: string }) {
+  return(
+    <div style={{ 
+      fontSize: 13, fontWeight: "bold", color: C.text, 
+      marginTop: 16, marginBottom: 4, paddingBottom: 4, 
+      borderBottom: `1px solid ${C.border}80`, fontFamily: "monospace" 
+    }}>
+      {label}
+    </div>
+  );
+}
+
+// ── unit title ──────────────────────────────────────────────────────────────────
+export function UnitTitle({ label }: { label: string }){
+  return(
+        <div style={{ 
+      fontSize: 11, fontWeight: "bold", color: C.muted, 
+      marginTop: 6, marginBottom: 2, fontFamily: "monospace", textTransform: "uppercase" 
+    }}>
+      ▸ {label}
+    </div>
+  )
+}
