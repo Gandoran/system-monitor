@@ -1,3 +1,13 @@
+<p align="center">
+  <img src="https://img.shields.io/badge/Tauri-2.0-FFC131?style=flat-square&logo=tauri&logoColor=white" />
+  <img src="https://img.shields.io/badge/Rust-1.75+-000000?style=flat-square&logo=rust&logoColor=white" />
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black" />
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white" />
+  <img src="https://img.shields.io/badge/Cargo-Build-8B4513?style=flat-square&logo=rust&logoColor=white" />
+  <img src="https://img.shields.io/badge/Node.js-20+-339933?style=flat-square&logo=nodedotjs&logoColor=white" />
+</p>
+
 # System-Monitor Dashboard
 
 ## 📖 Descrizione Dettagliata
