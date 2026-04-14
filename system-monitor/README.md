@@ -91,6 +91,15 @@ Il backend è organizzato in moduli che separano le responsabilità:
 
 ---
 
+### Esempi Di schermate
+<p align="center">
+   <img width="800" height="600" alt="Screenshot 2026-04-14 231023" src="https://github.com/user-attachments/assets/5a248878-803a-406e-8cf1-0597a90ecec5" />
+   <img width="800" height="600" alt="Screenshot 2026-04-14 231211" src="https://github.com/user-attachments/assets/b9e5684d-1dd0-4e97-a23b-27c681654194" />
+   <img width="800" height="600" alt="Screenshot 2026-04-14 231159" src="https://github.com/user-attachments/assets/40bf9021-4065-4b93-89b8-06205f7d9503" />
+</p>
+
+
+
 ### Riepilogo della Struttura Dati (Il Ciclo di Vita dei Dati)
 
 1.  **Polling (Rust):** Un thread periodico chiama i sensori (CPU, RAM, GPU) per ottenere un payload JSON aggiornato.
