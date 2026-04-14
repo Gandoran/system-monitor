@@ -22,3 +22,9 @@ pub fn stop_session(state: State<'_, Arc<Mutex<SessionTracker>>>) -> SessionResu
     SessionStorage::save(session.clone());
     session
 }
+
+#[command]
+pub fn delete_session(index: usize) -> Vec<SessionResults> {
+    SessionStorage::delete(index);
+    SessionStorage::load() 
+}

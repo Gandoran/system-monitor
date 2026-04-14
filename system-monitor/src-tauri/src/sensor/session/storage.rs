@@ -10,7 +10,7 @@ impl SessionStorage {
     pub fn save(new_session: SessionResults) {
         let mut history = Self::load();
         history.insert(0, new_session);
-        history.truncate(5);
+        history.truncate(50);
 
         let container = SessionHistory { sessions: history };
         if let Ok(xml_string) = quick_xml::se::to_string(&container) {
@@ -27,5 +27,16 @@ impl SessionStorage {
             }
         }
         Vec::new()
+    }
+
+    pub fn delete(index: usize) {
+        let mut history = Self::load();
+        if index < history.len() {
+            history.remove(index);
+            let container = SessionHistory { sessions: history };
+            if let Ok(xml_string) = quick_xml::se::to_string(&container) {
+                let _ = std::fs::write(Self::HISTORY_FILE, xml_string);
+            }
+        }
     }
 }

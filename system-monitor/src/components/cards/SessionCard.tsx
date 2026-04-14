@@ -1,12 +1,24 @@
 import { SessionResults } from "../../types/session";
 import { C, Card, ResultPill } from "../ui/SharedUi";
 
-export function SessionCard({ s, i }: { s: SessionResults; i: number }){
+interface SessionCardProps {
+  s: SessionResults;
+  i: number;
+  absoluteIndex: number;
+  onDelete: (index: number) => void;
+}
+
+export function SessionCard({ s, i, absoluteIndex, onDelete }: SessionCardProps)    {
 return(
-    <Card key={i} accent={i === 0 ? C.cpu : C.border}style={{ opacity: i === 0 ? 1 : 0.7, transition: "opacity 0.3s"}}>
+    <Card accent={i === 0 ? C.cpu : C.border} style={{ opacity: i === 0 ? 1 : 0.7, transition: "opacity 0.3s" }}>
     <div style={{ fontSize: 12, color: C.muted, marginBottom: 12, display: "flex", justifyContent: "space-between" }}>
-    <span>SESSIONE #{history.length - i} - ${s.processName}</span>
+    <span>SESSIONE #{absoluteIndex} <span style={{color: C.text}}>• 🎯 {s.processName || "Sistema"}</span></span>
     <span>Durata: <strong>{s.durationSeconds}s</strong></span>
+    <button onClick={() => onDelete(i)} onMouseEnter={(e) => e.currentTarget.style.opacity = "1"} onMouseLeave={(e) => e.currentTarget.style.opacity = "0.6"}
+            style={{ 
+              background: "transparent", border: "none", color: "#ff4444", cursor: "pointer", fontSize: 16, padding: "0 4px", 
+              opacity: 0.6, transition: "opacity 0.2s",display: "flex", alignItems: "center", justifyContent: "center"
+            }}>✕</button>
     </div>
     <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
     <ResultPill icon="🧠" label="CPU Load" avg={`${s.cpuAvgLoad.toFixed(1)}%`} peak={`${s.cpuMaxLoad.toFixed(1)}%`} color={C.cpu} />

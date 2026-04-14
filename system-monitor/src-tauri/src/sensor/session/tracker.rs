@@ -2,7 +2,8 @@ use crate::sensor::session::session_data::{SessionResults,SessionHistory};
 
 pub struct SessionTracker {
     pub is_running: bool,
-    pub target_process: Option<String>,
+    pub heaviest_process: Option<String>,
+    pub max_process_cpu: f32,
     pub ticks: u64,
     pub cpu_max_temp: f32,
     pub cpu_sum_temp: f32,
@@ -19,22 +20,26 @@ pub struct SessionTracker {
 impl SessionTracker {
     pub fn new() -> Self {
         Self {
-            is_running: false, target_process: None, ticks: 0, 
-            cpu_max_temp: 0.0, cpu_sum_temp: 0.0, cpu_sum_load: 0.0, 
+            is_running: false, heaviest_process: None, max_process_cpu: 0.0,
+            ticks: 0, cpu_max_temp: 0.0, cpu_sum_temp: 0.0, cpu_sum_load: 0.0, 
             cpu_max_load: 0.0, gpu_max_temp: 0.0, gpu_sum_temp: 0.0, 
-            gpu_max_load: 0.0, gpu_sum_load: 0.0, 
-            ram_sum_load: 0.0, ram_max_load: 0.0,
+            gpu_max_load: 0.0, gpu_sum_load: 0.0, ram_sum_load: 0.0, ram_max_load: 0.0,
         }
     }
 
-    pub fn start(&mut self, process: Option<String>) {
+    pub fn start(&mut self, _process: Option<String>) {
         *self = Self::new();   
         self.is_running = true;
-        self.target_process = process;
     }
 
-    pub fn update(&mut self, cpu_temp: f32, cpu_load: f32, gpu_temp: f32, gpu_load: f32, ram_load: f32) {
+    pub fn update(&mut self, cpu_temp: f32, cpu_load: f32, gpu_temp: f32, gpu_load: f32, ram_load: f32,top_process_name: Option<String>,top_process_cpu: f32) 
+    {
         if !self.is_running { return; }
+
+        if top_process_cpu > self.max_process_cpu {
+            self.max_process_cpu = top_process_cpu;
+            self.heaviest_process = top_process_name;
+        }
         
         self.ticks += 1;
         if cpu_temp > self.cpu_max_temp { self.cpu_max_temp = cpu_temp; }
@@ -53,9 +58,8 @@ impl SessionTracker {
     pub fn stop(&mut self) -> SessionResults {
         self.is_running = false;
         let divider = if self.ticks > 0 { self.ticks as f32 } else { 1.0 };
-        
         SessionResults {
-            process_name: self.target_process.clone(),
+            process_name: self.heaviest_process.clone(),
             duration_seconds: self.ticks,
             cpu_max_temp: self.cpu_max_temp,
             cpu_avg_temp: self.cpu_sum_temp / divider,

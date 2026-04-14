@@ -44,6 +44,7 @@ fn main() {
             command::session_command::get_session_history,
             command::session_command::start_session,
             command::session_command::stop_session,
+            command::session_command::delete_session,
             app_mode::set_app_mode,
         ])
         .setup(move |app| {

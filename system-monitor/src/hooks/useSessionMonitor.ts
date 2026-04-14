@@ -30,10 +30,19 @@ export function useSessionMonitor() {
             console.error("Errore stop sessione:", e);
         }
     };
+    const deleteSession = async (index: number) => {
+        try {
+            const updatedHistory = await invoke<SessionResults[]>("delete_session", { index });
+            setHistory(updatedHistory); 
+        } catch (e) {
+            console.error("Errore durante l'eliminazione:", e);
+        }
+    };
     return {
         isRunning,
         history,
         startSession,
-        stopSession
+        stopSession,
+        deleteSession,
     };
 }
